@@ -1,5 +1,5 @@
 <?php
-// VIEWS/instituciones_panel/dashboard.php
+// VIEWS/INSTITUCIONES_PANEL/dashboard.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -23,6 +23,7 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
             flex-direction: column;
             justify-content: space-between;
         }
+        /* Barra de navegación idéntica a la vista de usuario */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -36,41 +37,64 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
         .logo { font-size: 22px; font-weight: 700; letter-spacing: 1px; color: #ffffff; text-decoration: none; }
         .logo span { color: #3b82f6; }
         
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+        }
+        .nav-links a.logout {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
         main {
             flex: 1;
-            max-width: 1100px;
+            max-width: 1260px;
             width: 100%;
             margin: 0 auto;
             padding: 40px 20px;
         }
+
         .welcome-box {
             background: #141414;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 30px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
-        .welcome-box h1 { font-size: 28px; margin-bottom: 10px; color: #3b82f6; }
-        .welcome-box p { color: #9ca3af; font-size: 15px; }
+        .welcome-box h1 { font-size: 26px; margin-bottom: 8px; color: #3b82f6; }
+        .welcome-box p { color: #9ca3af; font-size: 15px; line-height: 1.5; }
 
-        .grid-panel {
+        .grid-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 400px 1fr;
             gap: 30px;
         }
-        @media (max-width: 768px) {
-            .grid-panel { grid-template-columns: 1fr; }
+        @media (max-width: 968px) {
+            .grid-layout { grid-template-columns: 1fr; }
         }
+
         .card-panel {
             background: #141414;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 30px;
+            height: fit-content;
         }
-        .card-panel h3 { font-size: 18px; margin-bottom: 20px; color: #ffffff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+        .card-panel h3 { font-size: 18px; margin-bottom: 20px; color: #ffffff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
         
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 6px; font-size: 14px; color: #9ca3af; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; color: #9ca3af; font-weight: 500; }
         .form-control {
             width: 100%;
             padding: 12px;
@@ -80,9 +104,10 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
             color: #fff;
             font-size: 14px;
             outline: none;
+            transition: border-color 0.2s;
         }
         .form-control:focus { border-color: #3b82f6; }
-        textarea.form-control { resize: vertical; min-height: 100px; }
+        textarea.form-control { resize: vertical; min-height: 110px; }
         
         .btn-submit {
             background-color: #3b82f6;
@@ -93,6 +118,7 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            font-size: 14px;
             transition: background 0.2s;
         }
         .btn-submit:hover { background-color: #2563eb; }
@@ -117,18 +143,25 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
 </head>
 <body>
 
+    <!-- NAVBAR COMPLETA CON TODOS LOS ENLACES DE LA VISTA DE USUARIO -->
     <header class="navbar">
-        <a href="#" class="logo">SIS<span>VO</span> - Panel Institucional</a>
-        <div>
-            <span style="color: #9ca3af; margin-right: 15px; font-size: 14px;">Hola, <?php echo htmlspecialchars($nombreInstitucion); ?></span>
-            <a href="/SISVOX/PUBLIC/index.php?route=logout" style="color: #ef4444; text-decoration: none; font-weight: 600; font-size: 14px;">Cerrar Sesión</a>
-        </div>
+        <a href="#" class="logo">SIS<span>VO</span></a>
+        <nav class="nav-links">
+            <a href="/SISVOX/PUBLIC/index.php?route=panel_institucion" class="active">Inicio</a>
+            <a href="/SISVOX/PUBLIC/index.php?route=chatbot">Chatbot</a>
+            <a href="/SISVOX/PUBLIC/index.php?route=carreras">Carreras</a>
+            <a href="/SISVOX/PUBLIC/index.php?route=sedes">Sedes</a>
+            <a href="/SISVOX/PUBLIC/index.php?route=convocatorias">Convocatorias</a>
+            <a href="/SISVOX/PUBLIC/index.php?route=becas">Becas</a>
+            <a href="#" style="color: #3b82f6; font-weight: 600; cursor: default;"><?php echo htmlspecialchars($nombreInstitucion); ?></a>
+            <a href="/SISVOX/PUBLIC/index.php?route=logout" class="logout">Salir (<?php echo htmlspecialchars($nombreInstitucion); ?>)</a>
+        </nav>
     </header>
 
     <main>
         <div class="welcome-box">
             <h1>Gestión de Convocatorias y Becas</h1>
-            <p>Desde este panel oficial podrás publicar oportunidades académicas, exámenes de admisión o becas que serán visibles para todos los estudiantes de SISVOX.</p>
+            <p>Desde este panel oficial puedes publicar oportunidades académicas, exámenes de admisión o becas. Las tarjetas a la derecha muestran en tiempo real exactamente lo que tus postulantes visualizarán.</p>
         </div>
 
         <?php if (isset($_GET['exito']) && $_GET['exito'] === 'creado'): ?>
@@ -139,7 +172,7 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
             <div class="alert alert-error">Por favor, complete todos los campos obligatorios del formulario.</div>
         <?php endif; ?>
 
-        <div class="grid-panel">
+        <div class="grid-layout">
             <!-- Columna Izquierda: Formulario para publicar -->
             <div class="card-panel">
                 <h3>Publicar Nueva Convocatoria</h3>
@@ -173,42 +206,39 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
                 </form>
             </div>
 
-            <!-- Columna Derecha: Convocatorias Activas (Con diseño moderno de tarjetas) -->
+            <!-- Columna Derecha: Convocatorias Activas -->
             <div class="card-panel">
-                <h3>Convocatorias Activas</h3>
-                <p style="color: #9ca3af; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">
-                    Aquí puedes verificar las publicaciones exclusivas que tu institución ha realizado.
-                </p>
+                <h3>Tus Convocatorias y Becas Publicadas</h3>
 
                 <?php if (empty($convocatorias) && empty($becas)): ?>
-                    <div style="padding: 20px; background: #0b0b0b; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); text-align: center; color: #6b7280; font-size: 14px;">
-                        Tus publicaciones aparecerán listadas aquí.
+                    <div style="padding: 30px; background: #0b0b0b; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); text-align: center; color: #6b7280; font-size: 14px;">
+                        Aún no has realizado ninguna publicación. ¡Usa el formulario de la izquierda para crear la primera!
                     </div>
                 <?php else: ?>
-                    <div style="display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto; padding-right: 5px;">
+                    <div style="display: flex; flex-direction: column; gap: 16px; max-height: 650px; overflow-y: auto; padding-right: 5px;">
                         
                         <!-- MOSTRAR CONVOCATORIAS -->
                         <?php if (!empty($convocatorias)): ?>
                             <?php foreach ($convocatorias as $conv): ?>
-                                <div style="background: #0b1329; border: 1px solid #1f293d; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div style="background: #0b0b0b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
                                     <div>
-                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                            <span style="background: #1e3a8a40; color: #60a5fa; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; border: 1px solid #1e3a8a80;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                            <span style="background: rgba(59, 130, 246, 0.15); color: #3b82f6; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
                                                 <?= htmlspecialchars($conv['nombre_institucion'] ?? $nombreInstitucion) ?>
                                             </span>
-                                            <span style="color: #94a3b8; font-size: 11px;">Convocatoria</span>
+                                            <span style="color: #9ca3af; font-size: 11px;">Convocatoria</span>
                                         </div>
-                                        <h4 style="color: #ffffff; font-size: 15px; font-weight: 600; margin-bottom: 6px;"><?= htmlspecialchars($conv['titulo']) ?></h4>
+                                        <h4 style="color: #ffffff; font-size: 16px; font-weight: 600; margin-bottom: 8px;"><?= htmlspecialchars($conv['titulo']) ?></h4>
                                         <?php if (!empty($conv['categoria'])): ?>
-                                            <div style="display: inline-block; background: #0284c720; color: #38bdf8; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-bottom: 8px;">
+                                            <div style="display: inline-block; background: rgba(59, 130, 246, 0.1); color: #60a5fa; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px;">
                                                 Categoría: <?= htmlspecialchars($conv['categoria']) ?>
                                             </div>
                                         <?php endif; ?>
-                                        <p style="color: #94a3b8; font-size: 13px; line-height: 1.4; margin-bottom: 12px;"><?= nl2br(htmlspecialchars($conv['descripcion'])) ?></p>
+                                        <p style="color: #9ca3af; font-size: 13px; line-height: 1.5; margin-bottom: 12px;"><?= nl2br(htmlspecialchars($conv['descripcion'])) ?></p>
                                     </div>
-                                    <div style="border-top: 1px solid #1f293d; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="color: #64748b; font-size: 12px;">Cierre: <?= htmlspecialchars($conv['fecha_cierre']) ?></span>
-                                        <span style="color: #34d399; font-size: 11px; font-weight: 500;">● Activa</span>
+                                    <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280; font-size: 12px;">Cierre: <?= htmlspecialchars($conv['fecha_cierre']) ?></span>
+                                        <span style="color: #10b981; font-size: 11px; font-weight: 500;">● Visible para estudiantes</span>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -217,25 +247,25 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
                         <!-- MOSTRAR BECAS -->
                         <?php if (!empty($becas)): ?>
                             <?php foreach ($becas as $beca): ?>
-                                <div style="background: #0b1329; border: 1px solid #1f293d; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div style="background: #0b0b0b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
                                     <div>
-                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                            <span style="background: #065f4640; color: #34d399; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; border: 1px solid #065f4680;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                            <span style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
                                                 <?= htmlspecialchars($beca['nombre_institucion'] ?? $nombreInstitucion) ?>
                                             </span>
-                                            <span style="background: #065f4620; color: #34d399; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">Beca</span>
+                                            <span style="background: rgba(16, 185, 129, 0.1); color: #10b981; font-size: 11px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">Beca</span>
                                         </div>
-                                        <h4 style="color: #ffffff; font-size: 15px; font-weight: 600; margin-bottom: 6px;"><?= htmlspecialchars($beca['titulo']) ?></h4>
-                                        <p style="color: #94a3b8; font-size: 13px; line-height: 1.4; margin-bottom: 10px;"><?= nl2br(htmlspecialchars($beca['descripcion'])) ?></p>
+                                        <h4 style="color: #ffffff; font-size: 16px; font-weight: 600; margin-bottom: 8px;"><?= htmlspecialchars($beca['titulo']) ?></h4>
+                                        <p style="color: #9ca3af; font-size: 13px; line-height: 1.5; margin-bottom: 10px;"><?= nl2br(htmlspecialchars($beca['descripcion'])) ?></p>
                                         <?php if (!empty($beca['requisitos'])): ?>
-                                            <p style="color: #cbd5e1; font-size: 12px; background: #0b0b0b; padding: 8px; border-radius: 6px; margin-bottom: 10px;">
-                                                <strong style="color: #38bdf8;">Requisitos:</strong> <?= nl2br(htmlspecialchars($beca['requisitos'])) ?>
+                                            <p style="color: #d1d5db; font-size: 12px; background: #141414; padding: 8px; border-radius: 6px; margin-bottom: 10px;">
+                                                <strong style="color: #3b82f6;">Requisitos:</strong> <?= nl2br(htmlspecialchars($beca['requisitos'])) ?>
                                             </p>
                                         <?php endif; ?>
                                     </div>
-                                    <div style="border-top: 1px solid #1f293d; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="color: #64748b; font-size: 12px;">Cierre: <?= htmlspecialchars($beca['fecha_cierre']) ?></span>
-                                        <span style="color: #34d399; font-size: 11px; font-weight: 500;">● Activa</span>
+                                    <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="color: #6b7280; font-size: 12px;">Cierre: <?= htmlspecialchars($beca['fecha_cierre']) ?></span>
+                                        <span style="color: #10b981; font-size: 11px; font-weight: 500;">● Visible para estudiantes</span>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
