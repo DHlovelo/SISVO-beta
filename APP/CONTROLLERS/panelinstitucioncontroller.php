@@ -16,54 +16,10 @@ class PanelInstitucionController
         }
     }
 
-    public function index()
+    private function obtenerConexion()
     {
-        $this->verificarRolInstitucion();
-
-        // Carga la vista del panel institucional
-        require_once __DIR__ . '/../../VIEWS/instituciones_panel/dashboard.php';
-    }
-
-    public function guardarPublicacion()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        session_start();
-        // Asegúrate de guardar el CI del usuario en la sesión al momento del login institucional
-        $ciUsu = $_SESSION['CI_usu'] ?? ''; 
-        
-        $tipo = $_POST['tipo_publicacion'];
-        $titulo = trim($_POST['titulo']);
-        $descripcion = trim($_POST['descripcion']);
-        $fechaCierre = $_POST['fecha_cierre'];
-
-        require_once __DIR__ . '/../../config/sisvo_conexion.php';
-        global $pdo;
-
-        if ($tipo === 'convocatoria') {
-            $categoria = trim($_POST['categoria']);
-            $stmt = $pdo->prepare("INSERT INTO convocatorias (CI_usu, titulo, categoria, descripcion, fecha_cierre) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$ciUsu, $titulo, $categoria, $descripcion, $fechaCierre]);
-        } else {
-            $requisitos = trim($_POST['requisitos']);
-            $stmt = $pdo->prepare("INSERT INTO becas (CI_usu, titulo, descripcion, requisitos, fecha_cierre) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$ciUsu, $titulo, $descripcion, $requisitos, $fechaCierre]);
-        }
-
-        // Redirigir al panel de la institución con éxito
-        header("Location: /SISVOX/PUBLIC/index.php?route=panel_institucion&exito=publicado");
-        exit();
-    }
-}
-    public function dashboard() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        
-        // Obtenemos el CI o ID de la institución de la sesión
-        $ciUsu = $_SESSION['CI_usu'] ?? '';
-
-        // 1. Incluimos la conexión a la base de datos
         require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
+        global $pdo;
 
         if (!isset($pdo)) {
             $host = 'localhost';
@@ -77,41 +33,69 @@ class PanelInstitucionController
                 die("Error de conexión: " . $e->getMessage());
             }
         }
+        return $pdo;
+    }
+
+    // Vista exclusiva para Convocatorias
+    public function convocatorias()
+    {
+        $this->verificarRolInstitucion();
+        $ciUsu = $_SESSION['CI_usu'] ?? '';
+        $pdo = $this->obtenerConexion();
 
         $convocatorias = [];
-        $becas = [];
-
         try {
-            // 2. Consultamos exclusivamente las convocatorias de esta institución
             if (!empty($ciUsu)) {
                 $stmtConv = $pdo->prepare("SELECT c.*, i.nombre_institucion FROM convocatorias c JOIN instituciones i ON c.CI_usu = i.CI_usu WHERE c.CI_usu = ? ORDER BY c.created_at DESC");
                 $stmtConv->execute([$ciUsu]);
                 $convocatorias = $stmtConv->fetchAll(PDO::FETCH_ASSOC);
+            }
+        } catch (Exception $e) {
+            $convocatorias = [];
+        }
 
-                // 3. Consultamos exclusivamente las becas de esta institución
+        $viewPath = __DIR__ . '/../../VIEWS/INSTITUCIONES_PANEL/convocatorias.php';
+        if (file_exists($viewPath)) {
+            require_once $viewPath;
+        } else {
+            echo "Error crítico: No se encuentra la vista de convocatorias en: " . $viewPath;
+        }
+    }
+
+    // Vista exclusiva para Becas
+    // En APP/CONTROLLERS/PanelInstitucionController.php
+
+    public function becas()
+    {
+        $this->verificarRolInstitucion();
+        $ciUsu = $_SESSION['CI_usu'] ?? '';
+        $pdo = $this->obtenerConexion();
+
+        $becas = [];
+        try {
+            if (!empty($ciUsu)) {
                 $stmtBecas = $pdo->prepare("SELECT b.*, i.nombre_institucion FROM becas b JOIN instituciones i ON b.CI_usu = i.CI_usu WHERE b.CI_usu = ? ORDER BY b.created_at DESC");
                 $stmtBecas->execute([$ciUsu]);
                 $becas = $stmtBecas->fetchAll(PDO::FETCH_ASSOC);
             }
         } catch (Exception $e) {
-            $convocatorias = [];
             $becas = [];
         }
 
-        // 4. Cargamos la vista del panel institucional
-        $viewPath = __DIR__ . '/../../VIEWS/INSTITUCIONES_PANEL/dashboard.php';
-        if (file_exists($viewPath)) {
-            require_once $viewPath;
-        } else {
-            echo "Error crítico: No se encuentra la vista del panel institucional en: " . $viewPath;
-        }
+        require_once __DIR__ . '/../../VIEWS/INSTITUCIONES_PANEL/becas.php';
     }
 
-    public function storeConvocatoria() {
+    // Mantener index apuntando por defecto a convocatorias o al panel general
+    public function index()
+    {
+        $this->convocatorias();
+    }
+
+    // Guardar Convocatoria
+    public function storeConvocatoria() 
+    {
+        $this->verificarRolInstitucion();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (session_start() === PHP_SESSION_NONE) {
-                session_start();
-            }
             $ciUsu = $_SESSION['CI_usu'] ?? ''; 
             
             $titulo = trim($_POST['titulo'] ?? '');
@@ -119,25 +103,43 @@ class PanelInstitucionController
             $descripcion = trim($_POST['descripcion'] ?? '');
             $fechaCierre = $_POST['fecha_cierre'] ?? '';
 
-            require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
-
-            if (!isset($pdo)) {
-                $host = 'localhost';
-                $dbname = 'sisvo';
-                $username = 'root';
-                $password = '';
-                $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            }
+            $pdo = $this->obtenerConexion();
 
             if (!empty($titulo) && !empty($categoria) && !empty($fechaCierre)) {
                 $stmt = $pdo->prepare("INSERT INTO convocatorias (CI_usu, titulo, categoria, descripcion, fecha_cierre) VALUES (?, ?, ?, ?, ?)");
                 $stmt->execute([$ciUsu, $titulo, $categoria, $descripcion, $fechaCierre]);
                 
-                header("Location: /SISVOX/PUBLIC/index.php?route=panel_institucion&exito=creado");
+                header("Location: /SISVOX/PUBLIC/index.php?route=institucion_convocatorias&exito=creado");
                 exit();
             } else {
-                header("Location: /SISVOX/PUBLIC/index.php?route=panel_institucion&error=campos_vacios");
+                header("Location: /SISVOX/PUBLIC/index.php?route=institucion_convocatorias&error=campos_vacios");
+                exit();
+            }
+        }
+    }
+
+    // Guardar Beca
+    public function storeBeca() 
+    {
+        $this->verificarRolInstitucion();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $ciUsu = $_SESSION['CI_usu'] ?? ''; 
+            
+            $titulo = trim($_POST['titulo'] ?? '');
+            $descripcion = trim($_POST['descripcion'] ?? '');
+            $requisitos = trim($_POST['requisitos'] ?? '');
+            $fechaCierre = $_POST['fecha_cierre'] ?? '';
+
+            $pdo = $this->obtenerConexion();
+
+            if (!empty($titulo) && !empty($fechaCierre)) {
+                $stmt = $pdo->prepare("INSERT INTO becas (CI_usu, titulo, descripcion, requisitos, fecha_cierre) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$ciUsu, $titulo, $descripcion, $requisitos, $fechaCierre]);
+                
+                header("Location: /SISVOX/PUBLIC/index.php?route=institucion_becas&exito=creado");
+                exit();
+            } else {
+                header("Location: /SISVOX/PUBLIC/index.php?route=institucion_becas&error=campos_vacios");
                 exit();
             }
         }
