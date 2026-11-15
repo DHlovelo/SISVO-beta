@@ -143,11 +143,18 @@ switch ($route) {
         (new PanelInstitucionController())->index();
         break;
 
+        case 'institucion_becas':
+        (new PanelInstitucionController())->becas();
+        break;
+
     case 'guardar_convocatoria':
         require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
         (new PanelInstitucionController())->storeConvocatoria();
         break;
-
+    
+    case 'guardar_beca':
+        (new PanelInstitucionController())->storeBeca();
+        break;
    
 
 // --- ubi ---
