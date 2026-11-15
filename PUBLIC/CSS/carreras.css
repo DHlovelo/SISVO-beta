@@ -1,0 +1,91 @@
+/* public/css/carreras.css */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0f172a;
+    color: #f8fafc;
+    line-height: 1.6;
+    padding: 30px 20px;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+.back-link {
+    display: inline-block;
+    color: #38bdf8;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 25px;
+    transition: color 0.2s;
+}
+.back-link:hover { color: #7dd3fc; }
+.header-section { text-align: center; margin-bottom: 30px; }
+.header-section h1 { font-size: 2.3rem; color: #ffffff; margin-bottom: 10px; font-weight: 700; }
+.header-section p { color: #94a3b8; font-size: 1.05rem; margin-bottom: 25px; }
+
+.search-box {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+    display: block;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    padding: 14px 20px;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.search-box:focus { border-color: #38bdf8; }
+
+.grid-carreras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 25px;
+}
+.card-carrera {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card-carrera:hover {
+    transform: translateY(-4px);
+    border-color: #38bdf8;
+}
+.carrera-tag {
+    display: inline-block;
+    background-color: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+.card-carrera h3 { font-size: 1.3rem; color: #fff; margin-bottom: 8px; }
+.card-carrera p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
+
+.card-action {
+    border-top: 1px solid #334155;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-afinidad {
+    background-color: #0284c7;
+    color: #ffffff;
+    padding: 7px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: background-color 0.2s;
+}
+.btn-afinidad:hover { background-color: #0369a1; }

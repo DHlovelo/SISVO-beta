@@ -1,0 +1,13 @@
+.table th {
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    font-size: 0.9rem;
+}
+
+.badge {
+    font-weight: 500;
+}
