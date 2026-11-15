@@ -5,6 +5,38 @@ require_once __DIR__ . '/../MODELS/usuario.php';
 
 class AuthController
 {
+//--- CORREOS
+public function registrar() {
+        // ... (tu lógica para recibir $_POST, validar campos y verificar que el correo no exista) ...
+
+        $nombre = $_POST['nombre'] ?? '';
+        $email  = $_POST['email'] ?? '';
+        $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+        $registroExitoso = true;
+
+        if ($registroExitoso) {
+   
+            $asunto      = "¡Bienvenido a SISVO!";
+            $cuerpoHtml  = plantillaBienvenida($nombre);
+            
+            // Enviamos el correo (esto devuelve true si se envió, false si falló)
+            $correoEnviado = enviarCorreo($email, $nombre, $asunto, $cuerpoHtml);
+
+            if (!$correoEnviado) {
+                // Opcional: Registrar en el log de errores si falló el correo, 
+                // pero permitimos que el usuario continúe su registro sin bloquearlo.
+                error_log("El usuario se registró pero falló el envío de correo a: " . $email);
+            }
+
+            // 4. Redirigir al usuario al login o dashboard con un mensaje de éxito
+            header("Location: " . url('auth/login.php?registro=exito'));
+            exit();
+        } else {
+            // Manejar error de registro en BD
+        }
+    }
+
     public function seleccionarRol()
     {
         if (session_status() === PHP_SESSION_NONE) {
