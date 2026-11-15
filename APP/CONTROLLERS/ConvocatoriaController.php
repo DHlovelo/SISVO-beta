@@ -1,10 +1,14 @@
 <?php
 class ConvocatoriaController {
     public function index() {
-        // 1. Incluimos la conexión a la base de datos asegurando la ruta
-        require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-        // Respaldo por si $pdo no se define globalmente
+        // 1. Conexión a la base de datos
+        require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
+        global $pdo;
+
         if (!isset($pdo)) {
             $host = 'localhost';
             $dbname = 'sisvo';
@@ -18,25 +22,45 @@ class ConvocatoriaController {
             }
         }
 
-        // 2. Consultamos las convocatorias y las becas uniendo con la tabla instituciones
+        // 2. Consultamos las convocatorias y becas
+        $convocatorias = [];
+        $becas = [];
         try {
-            $stmtConv = $pdo->query("SELECT c.*, i.nombre_institucion FROM convocatorias c JOIN instituciones i ON c.CI_usu = i.CI_usu ORDER BY c.created_at DESC");
+            $stmtConv = $pdo->query("SELECT c.*, COALESCE(i.nombre_institucion, 'Institución Aliada') AS nombre_institucion 
+                                     FROM convocatorias c 
+                                     LEFT JOIN instituciones i ON c.ci_usu = i.CI_usu 
+                                     ORDER BY c.created_at DESC");
             $convocatorias = $stmtConv->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmtBecas = $pdo->query("SELECT b.*, i.nombre_institucion FROM becas b JOIN instituciones i ON b.CI_usu = i.CI_usu ORDER BY b.created_at DESC");
+            $stmtBecas = $pdo->query("SELECT b.*, COALESCE(i.nombre_institucion, 'Institución Aliada') AS nombre_institucion 
+                                      FROM becas b 
+                                      LEFT JOIN instituciones i ON b.CI_usu = i.CI_usu 
+                                      ORDER BY b.created_at DESC");
             $becas = $stmtBecas->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             $convocatorias = [];
             $becas = [];
         }
 
-        // 3. Definimos correctamente la ruta de la vista
-        $viewPath = __DIR__ . '/../../VIEWS/CONVOCATORIAS/index.php';
+        // 3. Blindamos los datos en GLOBALS para que el layout no los borre
+        $GLOBALS['convocatorias'] = $convocatorias;
+        $GLOBALS['becas'] = $becas;
+
+        // 4. Indicamos la ruta actual para el layout
+        $_GET['route'] = 'convocatorias';
+
+        // 5. Cargamos el layout principal
+        $layoutPath = __DIR__ . '/../../VIEWS/layouts/app_layout.php';
         
-        if (file_exists($viewPath)) {
-            require_once $viewPath;
+        if (file_exists($layoutPath)) {
+            require_once $layoutPath;
         } else {
-            echo "Error crítico: No se encuentra la vista de convocatorias en: " . $viewPath;
+            $layoutPathAlt = __DIR__ . '/../../views/layouts/app_layout.php';
+            if (file_exists($layoutPathAlt)) {
+                require_once $layoutPathAlt;
+            } else {
+                echo "Error crítico: No se encuentra el layout principal.";
+            }
         }
     }
 }
