@@ -213,13 +213,16 @@ $route = $_GET['route'] ?? 'home';
             </div>
 
         <?php elseif ($route === 'convocatorias'): ?>
-            <div class="content-container">
-                <h2>Convocatorias Vigentes</h2>
-                <p>Mantente al tanto de las fechas de exámenes de admisión, ingresos especiales y convocatorias académicas abiertas.</p>
-                <br>
-                <a href="/SISVOX/public/index.php?route=home" class="btn-primary" style="display:inline-block; text-decoration: none;">Volver al inicio</a>
-            </div>
-
+            <?php
+                $convocatorias = $GLOBALS['convocatorias'] ?? [];
+                $becas = $GLOBALS['becas'] ?? [];
+                require_once __DIR__ . '/../CONVOCATORIAS/index.php';
+            ?>
+        <?php elseif ($route === 'becas'): ?>
+            <?php
+                $becas = $GLOBALS['becas'] ?? [];
+                require_once __DIR__ . '/../BECAS/index.php';
+            ?>
         <?php else: ?>
             <div style="max-width: 1100px; margin: 0 auto; width: 100%; padding: 0 20px;">
                 <?php 
