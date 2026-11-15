@@ -143,8 +143,17 @@ switch ($route) {
         (new PanelInstitucionController())->index();
         break;
 
-        case 'institucion_becas':
+    case 'institucion_becas':
+         // 1. Incluyes el archivo del controlador si no está cargado globalmente
+        require_once __DIR__ . '/../APP/CONTROLLERS/PanelInstitucionController.php';
+    
+        // 2. Ejecutas el método
         (new PanelInstitucionController())->becas();
+        break;
+
+    case 'institucion_convocatorias':
+        require_once __DIR__ . '/../APP/CONTROLLERS/PanelInstitucionController.php';
+        (new PanelInstitucionController())->convocatorias();
         break;
 
     case 'guardar_convocatoria':
@@ -153,6 +162,7 @@ switch ($route) {
         break;
     
     case 'guardar_beca':
+        require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
         (new PanelInstitucionController())->storeBeca();
         break;
    
