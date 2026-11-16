@@ -1,14 +1,12 @@
 <?php
-// app/Controllers/BecaController.php
-
 class BecaController {
     public function index() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
-        // 1. Incluir la conexión a la base de datos
-        require_once __DIR__ . '/../../config/sisvo_conexion.php'; 
+
+        // 1. Conexión a la base de datos
+        require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
         global $pdo;
 
         if (!isset($pdo)) {
@@ -24,22 +22,36 @@ class BecaController {
             }
         }
 
+        // 2. Consultamos las becas con el JOIN a instituciones
         $becas = [];
         try {
-            // 2. Preparar la consulta
-            $stmt = $pdo->prepare("SELECT b.*, i.nombre_institucion FROM becas b JOIN instituciones i ON b.CI_usu = i.CI_usu ORDER BY b.created_at DESC");
-            
-            // 3. LLAMAR CORRECTAMENTE A EXECUTE USANDO $stmt->
-            $stmt->execute(); 
-            
-            $becas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmtBecas = $pdo->query("SELECT b.*, COALESCE(i.nombre_institucion, 'Institución Aliada') AS nombre_institucion 
+                                      FROM becas b 
+                                      LEFT JOIN instituciones i ON b.CI_usu = i.CI_usu 
+                                      ORDER BY b.created_at DESC");
+            $becas = $stmtBecas->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             $becas = [];
         }
 
+        // 3. Blindamos los datos en GLOBALS para que el layout no los borre
+        $GLOBALS['becas'] = $becas;
+
+        // 4. Indicamos la ruta actual para el layout
         $_GET['route'] = 'becas';
+
+        // 5. Cargamos el layout principal
+        $layoutPath = __DIR__ . '/../../VIEWS/layouts/app_layout.php';
         
-        // 4. Cargar el layout (la variable $becas ya estará disponible para la vista)
-        require_once __DIR__ . '/../../views/layouts/app_layout.php';
+        if (file_exists($layoutPath)) {
+            require_once $layoutPath;
+        } else {
+            $layoutPathAlt = __DIR__ . '/../../views/layouts/app_layout.php';
+            if (file_exists($layoutPathAlt)) {
+                require_once $layoutPathAlt;
+            } else {
+                echo "Error crítico: No se encuentra el layout principal.";
+            }
+        }
     }
 }
