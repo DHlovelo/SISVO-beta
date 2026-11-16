@@ -33,8 +33,8 @@ class PerfilController {
 
             try {
                 if (!empty($nuevoPassword)) {
-                    // Actualizamos usando nombre_c_usu y password
-                    $stmtUpdate = $pdo->prepare("UPDATE nuevo_usu SET nombre_c_usu = ?, password = ? WHERE ci_usu = ?");
+                    // Actualizamos usando nombre_c_usu y contrasena (con 'n')
+                    $stmtUpdate = $pdo->prepare("UPDATE nuevo_usu SET nombre_c_usu = ?, contrasena = ? WHERE ci_usu = ?");
                     $stmtUpdate->execute([$nuevoNombre, $nuevoPassword, $ci_usu]);
                 } else {
                     // Si dejó la contraseña en blanco, solo actualizamos nombre_c_usu
@@ -48,7 +48,7 @@ class PerfilController {
                     $_SESSION['usuario']['nombre'] = $nuevoNombre;
                 }
 
-                $mensaje = "¡Perfil actualizado en la base de datos con éxito!";
+                $mensaje = "¡Perfil y contraseña actualizados con éxito!";
             } catch (Exception $e) {
                 $mensaje = "Error al actualizar: " . $e->getMessage();
             }
@@ -58,7 +58,7 @@ class PerfilController {
         $usuario = [];
         if ($ci_usu) {
             $stmt = $pdo->prepare("SELECT * FROM nuevo_usu WHERE ci_usu = ?");
-            $stmt->execute([$ci_usu]); // <-- Aquí se usa -> en lugar de .
+            $stmt->execute([$ci_usu]);
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
