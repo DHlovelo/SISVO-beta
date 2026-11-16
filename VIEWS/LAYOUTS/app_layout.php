@@ -165,7 +165,8 @@ $route = $_GET['route'] ?? 'home';
             <a href="/SISVOX/PUBLIC/index.php?route=instituciones" class="<?php echo ($route === 'instituciones') ? 'active' : ''; ?>">Instituciones</a>
             <a href="/SISVOX/PUBLIC/index.php?route=convocatorias" class="<?php echo ($route === 'convocatorias') ? 'active' : ''; ?>">Convocatorias</a>
             <a href="/SISVOX/PUBLIC/index.php?route=becas" class="<?php echo ($route === 'becas') ? 'active' : ''; ?>">Becas</a>
-            
+            <a href="/SISVOX/public/index.php?route=mi_cuenta" class="nav-link <?= ($_GET['route'] ?? '') === 'mi_cuenta' ? 'active' : '' ?>">Mi cuenta</a>
+
             <?php if (isset($_SESSION['CI_usu'])): ?>
                 <a href="/SISVOX/PUBLIC/index.php?route=logout" style="color: #ef4444;">Salir (<?php echo htmlspecialchars($_SESSION['nombre'] ?? ''); ?>)</a>
             <?php else: ?>
@@ -226,11 +227,10 @@ $route = $_GET['route'] ?? 'home';
         <?php else: ?>
             <div style="max-width: 1100px; margin: 0 auto; width: 100%; padding: 0 20px;">
                 <?php 
+                    $viewPath = '';
+
                     if ($route === 'carreras') {
                         $viewPath = __DIR__ . '/../carreras/index.php';
-                    }
-                    if(!empty($viewpath) && file_exists($viewpath)){
-                        include $viewpath;
                     } elseif ($route === 'test') {
                         $viewPath = __DIR__ . '/../test/index.php';
                     } elseif ($route === 'becas') {
@@ -239,14 +239,17 @@ $route = $_GET['route'] ?? 'home';
                         $viewPath = __DIR__ . '/../instituciones/index.php';
                     } elseif ($route === 'chatbot') {
                         $viewPath = __DIR__ . '/../chatbot/index.php';
-                    } else {
-                        $viewPath = '';
+                    } elseif ($route === 'mi_cuenta') {
+                        $usuario = $GLOBALS['usuario'] ?? [];
+                        require_once __DIR__ . '/../PERFIL/index.php';
                     }
 
-                    if (!empty($viewPath) && file_exists($viewPath)) {
-                        include $viewPath;
-                    } else {
-                        echo '<div class="content-container"><h2>Módulo en desarrollo</h2><p>Esta sección estará disponible próximamente en el sistema.</p><br><a href="/SISVOX/public/index.php?route=home" class="btn-primary" style="display:inline-block; text-decoration: none;">Volver al inicio</a></div>';
+                    if ($route !== 'mi_cuenta') {
+                        if (!empty($viewPath) && file_exists($viewPath)) {
+                            include $viewPath;
+                        } else {
+                            echo '<div class="content-container"><h2>Módulo en desarrollo</h2><p>Esta sección estará disponible próximamente en el sistema.</p><br><a href="/SISVOX/public/index.php?route=home" class="btn-primary" style="display:inline-block; text-decoration: none;">Volver al inicio</a></div>';
+                        }
                     }
                 ?>
             </div>

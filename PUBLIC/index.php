@@ -70,6 +70,12 @@ switch ($route) {
         (new HomeController())->index();
         break;
 
+    case 'mi_cuenta':
+        require_once __DIR__ . '/../APP/Controllers/PerfilController.php';
+        $controller = new PerfilController();
+        $controller->index();
+        break;
+
 //--- RUTAS PARA CARRERAS, INSTITUCIONES, CONVOCATORIAS, BECAS, CHATBOT, TEST Y ACERCA ---
 
     case 'carreras':
