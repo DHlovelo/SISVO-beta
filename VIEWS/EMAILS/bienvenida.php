@@ -1,6 +1,4 @@
 <?php
-// VIEWS/EMAILS/bienvenida.php
-// Variables: $nombre, $urlLogin
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,7 +16,6 @@
     <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0"
            style="width:100%; max-width:560px; background-color:#ffffff; border-radius:20px; border:1px solid #f0e4dc; overflow:hidden;">
 
-        <!-- ENCABEZADO CON DEGRADADO -->
         <tr>
             <td align="center" bgcolor="#d6336c"
                 style="background-color:#d6336c; background-image:linear-gradient(150deg,#c92a5b,#ee5a24); padding:40px 24px;">
@@ -31,7 +28,6 @@
             </td>
         </tr>
 
-        <!-- CONTENIDO -->
         <tr>
             <td style="padding:36px 36px 12px 36px; font-family:'Segoe UI',Arial,sans-serif; color:#2b2430;">
                 <div style="font-size:24px; font-weight:800; color:#1f1a24; margin-bottom:16px;">
@@ -46,7 +42,6 @@
             </td>
         </tr>
 
-        <!-- QUÉ PUEDES HACER -->
         <tr>
             <td style="padding:20px 36px 4px 36px;">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -75,7 +70,6 @@
             </td>
         </tr>
 
-        <!-- BOTÓN -->
         <tr>
             <td align="center" style="padding:16px 36px 36px 36px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
@@ -91,7 +85,6 @@
             </td>
         </tr>
 
-        <!-- PIE -->
         <tr>
             <td align="center" style="padding:20px 36px 28px 36px; border-top:1px solid #f0e4dc; font-family:'Segoe UI',Arial,sans-serif; font-size:12px; line-height:1.6; color:#a2989b;">
                 © SISVO · Sistema de orientación vocacional

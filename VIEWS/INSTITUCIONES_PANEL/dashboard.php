@@ -143,7 +143,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
 </head>
 <body>
 
-    <!-- NAVBAR COMPLETA CON TODOS LOS ENLACES DE LA VISTA DE USUARIO -->
     <header class="navbar">
         <a href="#" class="logo">SIS<span>VO</span></a>
         <nav class="nav-links">
@@ -172,7 +171,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
         <?php endif; ?>
 
         <div class="grid-layout">
-            <!-- Columna Izquierda: Formulario para publicar -->
             <div class="card-panel">
                 <h3>Publicar Nueva Convocatoria</h3>
                 <form action="/SISVOX/PUBLIC/index.php?route=guardar_convocatoria" method="POST">
@@ -205,7 +203,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
                 </form>
             </div>
 
-            <!-- Columna Derecha: Convocatorias Activas -->
             <div class="card-panel">
                 <h3>Tus Convocatorias y Becas Publicadas</h3>
 
@@ -216,7 +213,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
                 <?php else: ?>
                     <div style="display: flex; flex-direction: column; gap: 16px; max-height: 650px; overflow-y: auto; padding-right: 5px;">
                         
-                        <!-- MOSTRAR CONVOCATORIAS -->
                         <?php if (!empty($convocatorias)): ?>
                             <?php foreach ($convocatorias as $conv): ?>
                                 <div style="background: #0b0b0b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
@@ -243,7 +239,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
                             <?php endforeach; ?>
                         <?php endif; ?>
 
-                        <!-- MOSTRAR BECAS -->
                         <?php if (!empty($becas)): ?>
                             <?php foreach ($becas as $beca): ?>
                                 <div style="background: #0b0b0b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">

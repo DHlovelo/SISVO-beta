@@ -13,7 +13,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #0b0b0b; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
         
-        /* Navbar idéntica a la del estudiante */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 25px 60px; max-width: 1400px; width: 100%; margin: 0 auto; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .logo { font-size: 22px; font-weight: 700; letter-spacing: 1px; color: #ffffff; text-decoration: none; }
         .logo span { color: #3b82f6; }
@@ -51,7 +50,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
 </head>
 <body>
 
-    <!-- NAVBAR CON LOS BOTONES SOLICITADOS -->
     <header class="navbar">
         <a href="#" class="logo">SIS<span>VO</span></a>
         <nav class="nav-links">

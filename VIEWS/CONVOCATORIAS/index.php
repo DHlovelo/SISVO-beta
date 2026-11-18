@@ -21,27 +21,22 @@ $listaConvocatorias = $convocatorias ?? ($GLOBALS['convocatorias'] ?? []);
             </span>
         </div>
 
-        <!-- BARRA DE BÚSQUEDA INTEGRADA -->
         <div style="max-width: 500px; margin: 0 auto 35px auto;">
             <input type="text" id="buscadorConvocatorias" placeholder="Buscar por título, institución o categoría..." onkeyup="filtrarConvocatorias()" style="width: 100%; padding: 12px 20px; background: #0b1329; border: 1px solid #1f293d; color: #ffffff; border-radius: 10px; font-size: 14px; outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: border-color 0.2s;">
         </div>
 
-        <!-- CUADRÍCULA DE TARJETAS DE CONVOCATORIAS -->
         <div class="contenedor-tarjetas" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px;">
             
             <?php if (empty($listaConvocatorias)): ?>
-                <!-- Estado vacío -->
                 <div style="grid-column: 1 / -1; text-align: center; padding: 50px; background: #0b1329; border-radius: 14px; border: 1px dashed #1f293d;">
                     <p style="color: #94a3b8; font-size: 16px; margin: 0;">No hay convocatorias publicadas por el momento.</p>
                 </div>
             <?php else: ?>
 
-                <!-- Bucle dinámico de convocatorias -->
                 <?php foreach ($listaConvocatorias as $conv): ?>
                     <div class="tarjeta-item" data-texto="<?= strtolower(htmlspecialchars(($conv['titulo'] ?? '') . ' ' . ($conv['nombre_institucion'] ?? '') . ' ' . ($conv['categoria'] ?? ''))) ?>" style="background: #0b1329; border: 1px solid #1f293d; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: border-color 0.2s;">
                         
                         <div>
-                            <!-- Insignia de Institución y Tipo -->
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                                 <span style="background: rgba(37, 99, 235, 0.15); color: #60a5fa; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px; text-transform: uppercase; border: 1px solid rgba(37, 99, 235, 0.3); letter-spacing: 0.5px;">
                                     <?= htmlspecialchars($conv['nombre_institucion'] ?? 'Institución') ?>
@@ -49,25 +44,21 @@ $listaConvocatorias = $convocatorias ?? ($GLOBALS['convocatorias'] ?? []);
                                 <span style="background: rgba(37, 99, 235, 0.1); color: #60a5fa; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;">Convocatoria</span>
                             </div>
 
-                            <!-- Título -->
                             <h3 style="color: #ffffff; font-size: 20px; font-weight: 600; margin-bottom: 12px; line-height: 1.3;">
                                 <?= htmlspecialchars($conv['titulo'] ?? '') ?>
                             </h3>
 
-                            <!-- Categoría (si existe) -->
                             <?php if (!empty($conv['categoria'])): ?>
                                 <div style="display: inline-block; background: rgba(2, 132, 199, 0.1); color: #38bdf8; font-size: 12px; padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; border: 1px solid rgba(2, 132, 199, 0.2);">
                                     <strong>Categoría:</strong> <?= htmlspecialchars($conv['categoria']) ?>
                                 </div>
                             <?php endif; ?>
 
-                            <!-- Descripción -->
                             <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
                                 <?= nl2br(htmlspecialchars($conv['descripcion'] ?? '')) ?>
                             </p>
                         </div>
 
-                        <!-- Pie de tarjeta: Fecha y Botón -->
                         <div style="border-top: 1px solid #1f293d; padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <span style="display: block; color: #64748b; font-size: 11px; text-transform: uppercase; font-weight: 600;">Fecha límite</span>
@@ -85,14 +76,12 @@ $listaConvocatorias = $convocatorias ?? ($GLOBALS['convocatorias'] ?? []);
         </div>
     </div>
 
-    <!-- Botón de retorno -->
     <div style="margin: 40px 0; text-align: center;">
         <a href="/SISVOX/public/index.php?route=inicio_estudiante" class="btn-primary" style="display:inline-block; text-decoration: none; background-color: #ffffff; color: #0b0b0b; padding: 12px 28px; border-radius: 30px; font-weight: 600; font-size: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">← Volver al inicio</a>
     </div>
 
 </div>
 
-<!-- SCRIPT DE FILTRADO EN TIEMPO REAL -->
 <script>
 function filtrarConvocatorias() {
     let input = document.getElementById('buscadorConvocatorias').value.toLowerCase();

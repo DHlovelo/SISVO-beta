@@ -1,5 +1,4 @@
 <?php
-// views/layouts/app_layout.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -154,23 +153,19 @@ $route = $_GET['route'] ?? 'home';
 </head>
 <body>
 
-    <!-- Navbar con enlace de Inicio -->
     <header class="navbar">
         <a href="/SISVOX/PUBLIC/index.php?route=home" class="logo">SIS<span>VO</span></a>
         <nav class="nav-links">
             <a href="/SISVOX/PUBLIC/index.php?route=inicio_estudiante" class="<?php echo ($route === 'inicio_estudiante') ? 'active' : ''; ?>">Inicio</a>
             
             <?php 
-                // Evaluamos si el usuario actual es una institución
                 $esInstitucion = isset($_SESSION['rol']) && $_SESSION['rol'] === 'institucion';
                 
-                // Definimos el enlace dinámico de carreras según el rol
                 $enlaceCarreras = $esInstitucion 
                     ? '/SISVOX/PUBLIC/index.php?route=institucion_carreras' 
                     : '/SISVOX/PUBLIC/index.php?route=carreras';
             ?>
 
-            <!-- El Chatbot y el Test SOLO se muestran si NO es una institución -->
             <?php if (!$esInstitucion): ?>
                 <a href="/SISVOX/PUBLIC/index.php?route=chatbot" class="<?php echo ($route === 'chatbot') ? 'active' : ''; ?>">Chatbot</a>
                 <a href="/SISVOX/PUBLIC/index.php?route=test" class="<?php echo ($route === 'test') ? 'active' : ''; ?>">Test</a>
@@ -190,7 +185,6 @@ $route = $_GET['route'] ?? 'home';
         </nav>
     </header>
 
-    <!-- Main Content -->
     <main>
         <?php if ($route === 'home'|| $route === 'inicio_estudiante'): ?>
             <section class="hero-section" style="margin-bottom: 50px;">
@@ -273,7 +267,6 @@ $route = $_GET['route'] ?? 'home';
         <?php endif; ?>
     </main>
 
-    <!-- Footer -->
     <footer>
         SISVO - Proyecto de Programación &copy; 2026
     </footer>

@@ -1,5 +1,4 @@
 <?php
-// Aseguramos las variables pasadas desde el controlador
 $sedes = $GLOBALS['sedes_institucion'] ?? [];
 $carreras = $GLOBALS['carreras_institucion'] ?? [];
 ?>

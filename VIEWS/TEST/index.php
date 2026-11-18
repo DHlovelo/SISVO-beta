@@ -1,26 +1,21 @@
 <?php
-// views/test/index.php
 ?>
 <div style="max-width: 750px; margin: 0 auto; padding: 0 15px;">
     
     <div style="text-align: center; margin-bottom: 25px;">
         <h2 style="font-size: 28px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Test Vocacional MBTI (93 Preguntas)</h2>
         <p style="color: #94a3b8; font-size: 14px;">Responde con sinceridad para calcular tu tipo de personalidad y carreras afines.</p>
-        <!-- Barra de Progreso -->
         <div style="background: rgba(255,255,255,0.08); border-radius: 10px; height: 8px; width: 100%; margin-top: 20px; overflow: hidden;">
             <div id="progress-bar" style="background: #3b82f6; height: 100%; width: 0%; transition: width 0.3s ease;"></div>
         </div>
         <span id="progress-text" style="color: #64748b; font-size: 12px; display: block; margin-top: 6px;">Pregunta 1 de 93</span>
     </div>
 
-    <!-- Contenedor de la Pregunta en Burbuja -->
     <div id="quiz-card" style="background: #141414; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         
         <div id="question-container">
-            <!-- La pregunta actual se inyectará aquí mediante JavaScript -->
         </div>
 
-        <!-- Botones de Navegación -->
         <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px;">
             <button id="btn-anterior" onclick="preguntaAnterior()" style="background: transparent; color: #94a3b8; border: 1px solid rgba(255,255,255,0.15); padding: 10px 22px; border-radius: 25px; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.2s;" disabled>← Retroceder</button>
             <button id="btn-siguiente" onclick="preguntaSiguiente()" style="background: #3b82f6; color: white; border: none; padding: 10px 28px; border-radius: 25px; font-weight: 600; cursor: pointer; font-size: 14px; transition: background 0.2s;">Siguiente →</button>
@@ -28,14 +23,12 @@
 
     </div>
 
-    <!-- Contenedor de Resultados -->
     <div id="resultado-container" style="display: none; background: #141414; border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; padding: 35px; text-align: center;">
         <h3 style="font-size: 24px; color: #3b82f6; margin-bottom: 10px;">¡Test completado con éxito!</h3>
         <p style="color: #94a3b8; font-size: 15px; margin-bottom: 10px;">Tu tipo de personalidad MBTI resultante es:</p>
         
         <div style="font-size: 38px; font-weight: 800; color: #fff; letter-spacing: 2px; margin-bottom: 8px;" id="mbti-code">----</div>
         
-        <!-- Significado de cada inicial debajo de las siglas -->
         <p id="mbti-significado" style="color: #3b82f6; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 20px;"></p>
 
         <p id="mbti-descripcion" style="color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 25px;"></p>
@@ -45,7 +38,6 @@
             <p id="mbti-carreras" style="color: #94a3b8; font-size: 14px; margin: 0; line-height: 1.6;"></p>
         </div>
         
-        <!-- Botones finales de acción -->
         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
             <a href="/SISVOX/public/index.php?route=carreras" style="display: inline-block; background: #3b82f6; color: #ffffff; padding: 12px 28px; border-radius: 30px; font-weight: 600; text-decoration: none; font-size: 14px; transition: background 0.2s;">Explorar Carreras Disponibles</a>
             <a href="/SISVOX/public/index.php?route=home" style="display: inline-block; background: transparent; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 28px; border-radius: 30px; font-weight: 600; text-decoration: none; font-size: 14px; transition: all 0.2s;">Volver al Inicio</a>
@@ -58,7 +50,6 @@
 </div>
 
 <script>
-// Banco de las 93 preguntas del test MBTI oficial
 const preguntasMBTI = [
     { id: 1, dim: 'EI', texto: "¿Te agota estar rodeado de mucha gente durante mucho tiempo?", opA: "Sí, prefiero la tranquilidad a solas", opB: "No, me llena de energía", valA: "I", valB: "E" },
     { id: 2, dim: 'SN', texto: "¿Prefieres enfocarte en hechos reales y tangibles antes que en teorías abstractas?", opA: "Sí, prefiero lo práctico y real", opB: "No, me encantan las ideas abstractas", valA: "S", valB: "N" },

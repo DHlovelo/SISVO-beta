@@ -51,7 +51,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
 </head>
 <body>
 
-    <!-- NAVBAR CON LOS BOTONES SOLICITADOS -->
     <header class="navbar">
         <a href="#" class="logo">SIS<span>VO</span></a>
         <nav class="nav-links">

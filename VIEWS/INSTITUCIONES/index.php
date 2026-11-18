@@ -22,7 +22,6 @@ $sedesPublicas = $GLOBALS['sedesPublicas'] ?? [];
             <p>Universidades, Institutos Tecnológicos, Comerciales y Academias con sede en La Paz y El Alto.</p>
         </div>
 
-        <!-- Buscador interactivo -->
         <input type="text" id="buscador" class="search-box" placeholder="Buscar institución, sede o ciudad (ej. Unifranz, El Alto, Central)..." onkeyup="filtrarSedes()">
 
         <h2 class="section-title">Sedes y Campus Registrados</h2>
@@ -34,18 +33,14 @@ $sedesPublicas = $GLOBALS['sedesPublicas'] ?? [];
                 </p>
             <?php else: ?>
                 <?php foreach ($sedesPublicas as $sede): 
-                    // Texto para el buscador interactivo
                     $textoBusq = strtolower(($sede['nombre_institucion'] ?? '') . ' ' . ($sede['nombre_sede'] ?? '') . ' ' . ($sede['ciudad'] ?? '') . ' ' . ($sede['direccion'] ?? ''));
                 ?>
-                    <!-- CADA SEDE COMO UNA TARJETA SEPARADA -->
                     <div class="card-inst" data-nombre="<?= htmlspecialchars($textoBusq) ?>">
                         <div>
                             <span class="badge-tipo"><?= htmlspecialchars($sede['tipo_institucion'] ?? 'Institución') ?></span>
                             
-                            <!-- Nombre de la Universidad / Institución -->
                             <h3 style="margin-top: 6px; color: #ffffff;"><?= htmlspecialchars($sede['nombre_institucion'] ?? $sede['nombre'] ?? 'Institución') ?></h3>
                             
-                            <!-- Nombre específico de la Sede -->
                             <p style="font-size: 15px; font-weight: 600; color: #3b82f6; margin-top: 8px;">
                                 📍 Sede: <?= htmlspecialchars($sede['nombre_sede']) ?>
                             </p>

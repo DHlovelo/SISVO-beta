@@ -13,7 +13,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? '
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #0b0b0b; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
         
-        /* Navbar */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 25px 60px; max-width: 1400px; width: 100%; margin: 0 auto; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .logo { font-size: 22px; font-weight: 700; letter-spacing: 1px; color: #ffffff; text-decoration: none; }
         .logo span { color: #3b82f6; }
@@ -24,12 +23,10 @@ $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? '
 
         main { flex: 1; max-width: 1260px; width: 100%; margin: 0 auto; padding: 40px 20px; }
 
-        /* Alertas */
         .alert { padding: 12px 18px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; }
         .alert-success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: #4ade80; }
         .alert-error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
 
-        /* Tarjetas */
         .card {
             background-color: #141414;
             border: 1px solid rgba(255,255,255,0.08);
@@ -40,7 +37,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? '
         .card h2 { font-size: 20px; margin-bottom: 6px; color: #ffffff; }
         .card p.subtitle { color: #9ca3af; font-size: 14px; margin-bottom: 22px; }
 
-        /* Formulario */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group { display: flex; flex-direction: column; margin-bottom: 4px; }
         .form-group.full { grid-column: span 2; }
@@ -103,7 +99,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? '
 </head>
 <body>
 
-    <!-- NAVBAR UNIFICADA -->
      <header class="navbar">
         <a href="#" class="logo">SIS<span>VO</span></a>
         <nav class="nav-links">
@@ -118,7 +113,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? '
     </header>
 
     <main>
-        <!-- Mensajes de confirmación o error -->
         <?php if (isset($_GET['exito'])): ?>
             <div class="alert alert-success">
                 <?php
@@ -134,7 +128,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? '
             </div>
         <?php endif; ?>
 
-        <!-- Formulario para registrar una nueva sede -->
         <div class="card">
             <h2>Agregar Nueva Sede</h2>
             <p class="subtitle">Registra tus campus, sucursales o centros de atención para que los postulantes puedan ubicarlos.</p>
@@ -166,7 +159,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? '
             </form>
         </div>
 
-        <!-- Listado de sedes registradas -->
         <div class="card">
             <h2>Sedes Registradas (<?= count($sedes ?? []) ?>)</h2>
             <p class="subtitle">Estas ubicaciones aparecen automáticamente en el directorio público de instituciones.</p>

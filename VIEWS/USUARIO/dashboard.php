@@ -1,8 +1,6 @@
 <?php
-// 1. Incluimos la conexión a la base de datos asegurando la ruta hacia tu carpeta config
 require_once __DIR__ . '/../../config/sisvo_conexion.php';
 
-// Verificación de respaldo para asegurar que $pdo funcione
 if (!isset($pdo)) {
     $host = 'localhost';
     $dbname = 'sisvo';
@@ -12,16 +10,13 @@ if (!isset($pdo)) {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 
-// 2. Consultamos las convocatorias uniendo con la tabla instituciones para traer el nombre real
 $stmtConv = $pdo->query("SELECT c.*, i.nombre_institucion FROM convocatorias c JOIN instituciones i ON c.CI_usu = i.CI_usu ORDER BY c.created_at DESC");
 $convocatorias = $stmtConv->fetchAll(PDO::FETCH_ASSOC);
 
-// 3. Consultamos las becas uniendo con la tabla instituciones
 $stmtBecas = $pdo->query("SELECT b.*, i.nombre_institucion FROM becas b JOIN instituciones i ON b.CI_usu = i.CI_usu ORDER BY b.created_at DESC");
 $becas = $stmtBecas->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- SECCIÓN VISUAL PARA EL ESTUDIANTE -->
 <div class="container-publicaciones" style="padding: 20px;">
     <h2>Convocatorias Disponibles</h2>
     <?php if (empty($convocatorias)): ?>
