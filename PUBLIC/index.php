@@ -57,6 +57,22 @@ switch ($route) {
         (new AuthController())->logout();
         break;
 
+//--- VERIFICACIÓN DE CORREO [NUEVO]
+    case 'verificacion_pendiente':
+        require_once __DIR__ . '/../APP/Controllers/AuthController.php';
+        (new AuthController())->verificacionPendiente();
+        break;
+
+    case 'verificar_correo':
+        require_once __DIR__ . '/../APP/Controllers/AuthController.php';
+        (new AuthController())->verificarCorreo();
+        break;
+
+    case 'reenviar_verificacion':
+        require_once __DIR__ . '/../APP/Controllers/AuthController.php';
+        (new AuthController())->reenviarVerificacion();
+        break;
+
 //--- SELECCIONAR EL ROL DE USUARIO ---
     case 'seleccionar_rol':
         require_once __DIR__ . '/../APP/Controllers/AuthController.php';

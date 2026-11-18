@@ -17,4 +17,54 @@ class Usuario {
         $stmt = $pdo->prepare("INSERT INTO nuevo_usu (CI_usu, nombre_c_usu, telefono, correo, fecha_nacimiento, contrasena, rol) VALUES (?, ?, ?, ?, ?, ?, ?)");
         return $stmt->execute([$ci, $nombre, $telefono, $correo, $fecha_nacimiento, $passwordHash, $rol]);
     }
+
+    // =====================================================
+    // [NUEVO] VERIFICACIÓN DE CORREO
+    // =====================================================
+
+    /**
+     * Guarda el HASH del token y lo hace vencer en 24 horas.
+     * (El token real solo viaja en el correo; en la BD queda su hash SHA-256.)
+     */
+    public static function guardarTokenVerificacion($ci, $tokenHash) {
+        global $pdo;
+        $stmt = $pdo->prepare(
+            "UPDATE nuevo_usu
+                SET token_verificacion = ?,
+                    token_expira = DATE_ADD(NOW(), INTERVAL 24 HOUR),
+                    email_verificado = 0
+              WHERE CI_usu = ?"
+        );
+        return $stmt->execute([$tokenHash, $ci]);
+    }
+
+    /**
+     * Busca al usuario dueño de un token. Devuelve también 'vigente' (1 = no ha vencido, 0 = venció).
+     */
+    public static function buscarPorTokenVerificacion($tokenHash) {
+        global $pdo;
+        $stmt = $pdo->prepare(
+            "SELECT *, (token_expira > NOW()) AS vigente
+               FROM nuevo_usu
+              WHERE token_verificacion = ?
+              LIMIT 1"
+        );
+        $stmt->execute([$tokenHash]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Marca el correo como verificado y borra el token (un token sirve una sola vez).
+     */
+    public static function marcarCorreoVerificado($ci) {
+        global $pdo;
+        $stmt = $pdo->prepare(
+            "UPDATE nuevo_usu
+                SET email_verificado = 1,
+                    token_verificacion = NULL,
+                    token_expira = NULL
+              WHERE CI_usu = ?"
+        );
+        return $stmt->execute([$ci]);
+    }
 }
