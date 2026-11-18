@@ -1,0 +1,5 @@
+# Credenciales: NUNCA subir a GitHub
+config/mail.php
+
+# Dependencias de Composer
+vendor/
