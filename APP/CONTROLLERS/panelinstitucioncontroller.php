@@ -233,55 +233,90 @@ class PanelInstitucionController
     }
 
     // Método para cargar la vista del panel de carreras con sus sedes
+  // Muestra el panel privado de la institución con el formulario y sus sedes
     public function carreras() {
-        if (session_status() === PHP_SESSION_NONE) { session_start(); }
+        if (session_status() === PHP_SESSION_NONE) { 
+            session_start(); 
+        }
         $ci_usu = $_SESSION['ci'] ?? $_SESSION['CI_usu'] ?? null;
-        $nombreInstitucion = $_SESSION['nombre'] ?? $_SESSION['nombre_institucion'] ?? 'Institución';
 
+        // 1. Requerimos la conexión a la base de datos
         require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
         global $pdo;
 
-        // 1. Obtenemos las sedes de esta institución para el menú desplegable
+        // 2. Si $pdo llega como null, lo inicializamos de manera segura para evitar errores
+        if (!isset($pdo) || $pdo === null) {
+            $host = 'localhost';
+            $dbname = 'sisvo'; // Nombre de tu base de datos
+            $username = 'root';
+            $password = '';
+            try {
+                $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                die("Error de conexión a la Base de Datos: " . $e->getMessage());
+            }
+        }
+
+        // 3. Obtenemos las sedes de esta institución para el selector del formulario
         $stmtSedes = $pdo->prepare("SELECT * FROM sedes WHERE CI_usu = ? ORDER BY id_sede DESC");
         $stmtSedes->execute([$ci_usu]);
         $sedes = $stmtSedes->fetchAll(PDO::FETCH_ASSOC);
 
-        // 2. Obtenemos las carreras ya publicadas por esta institución
+        // 4. Obtenemos las carreras ya subidas por esta institución
         $stmtCarreras = $pdo->prepare("SELECT c.*, s.nombre_sede FROM carreras c LEFT JOIN sedes s ON c.id_sede = s.id_sede WHERE c.CI_usu = ? ORDER BY c.id_carrera DESC");
         $stmtCarreras->execute([$ci_usu]);
         $carreras = $stmtCarreras->fetchAll(PDO::FETCH_ASSOC);
 
-        // Cargamos la vista del panel
-        require_once __DIR__ . '/../../VIEWS/INSTITUCIONES_PANEL/carreras.php';
-    }
+        // Pasamos las variables a las variables globales que lee tu layout de institución
+        $GLOBALS['sedes_institucion'] = $sedes;
+        $GLOBALS['carreras_institucion'] = $carreras;
+        $_GET['route'] = 'institucion_carreras';
 
-    // Método para guardar la nueva carrera seleccionando su sede
-    public function storeCarrera() {
-        if (session_status() === PHP_SESSION_NONE) { session_start(); }
-        $ci_usu = $_SESSION['ci'] ?? $_SESSION['CI_usu'] ?? null;
+        // Cargamos el layout principal del panel institucional (ej. app_layout_institucion o el que usen tus otras secciones de sedes/becas)
+        $layoutMay = __DIR__ . '/../../VIEWS/layouts/app_layout_institucion.php';
+        $layoutMin = __DIR__ . '/../../views/layouts/app_layout_institucion.php';
 
-        $nombre_carrera = $_POST['nombre_carrera'] ?? '';
-        $id_sede = $_POST['id_sede'] ?? null;
-        $nivel = $_POST['nivel'] ?? 'Licenciatura';
-        $duracion = $_POST['duracion'] ?? '';
-        $descripcion = $_POST['descripcion'] ?? '';
-
-        if (empty($nombre_carrera) || empty($id_sede)) {
-            header('Location: /SISVOX/PUBLIC/index.php?route=institucion_carreras&error=campos_vacios');
-            exit;
+        if (file_exists($layoutMay)) {
+            require_once $layoutMay;
+        } elseif (file_exists($layoutMin)) {
+            require_once $layoutMin;
+        } else {
+            // Si tu panel usa otra estructura de layout, cámbiala aquí (por ejemplo, app_layout.php)
+            require_once __DIR__ . '/../../VIEWS/layouts/app_layout.php';
         }
+    }
+ public function storeCarrera() {
+        if (session_status() === PHP_SESSION_NONE) { 
+            session_start(); 
+        }
+        $ci_usu = $_SESSION['ci'] ?? $_SESSION['CI_usu'] ?? null;
 
         require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
         global $pdo;
 
-        try {
-            $stmt = $pdo->prepare("INSERT INTO carreras (CI_usu, id_sede, nombre_carrera, nivel, duracion, descripcion) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$ci_usu, $id_sede, $nombre_carrera, $nivel, $duracion, $descripcion]);
-
-            header('Location: /SISVOX/PUBLIC/index.php?route=institucion_carreras&exito=creado');
-            exit;
-        } catch (Exception $e) {
-            die("Error al guardar la carrera: " . $e->getMessage());
+        if (!isset($pdo) || $pdo === null) {
+            try {
+                $pdo = new PDO("mysql:host=localhost;dbname=sisvo;charset=utf8", "root", "");
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                die("Error de conexión: " . $e->getMessage());
+            }
         }
+
+        // Recogemos los datos (usando 'nivel' en lugar de 'nivel_academico')
+        $nombre_carrera = $_POST['nombre_carrera'] ?? '';
+        $id_sede = $_POST['id_sede'] ?? '';
+        $nivel = $_POST['nivel'] ?? '';
+        $duracion = $_POST['duracion'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
+
+        // Inserción usando la columna exacta 'nivel' de tu tabla
+        $stmt = $pdo->prepare("INSERT INTO carreras (nombre_carrera, id_sede, nivel, duracion, descripcion, CI_usu) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nombre_carrera, $id_sede, $nivel, $duracion, $descripcion, $ci_usu]);
+
+        // Redirigir de vuelta al panel con éxito
+        header("Location: /SISVOX/PUBLIC/index.php?route=institucion_carreras");
+        exit;
     }
 }

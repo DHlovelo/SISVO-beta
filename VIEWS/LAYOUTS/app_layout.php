@@ -161,8 +161,18 @@ $route = $_GET['route'] ?? 'home';
             <a href="/SISVOX/PUBLIC/index.php?route=inicio_estudiante" class="<?php echo ($route === 'inicio_estudiante') ? 'active' : ''; ?>">Inicio</a>
             <a href="/SISVOX/PUBLIC/index.php?route=chatbot" class="<?php echo ($route === 'chatbot') ? 'active' : ''; ?>">Chatbot</a>
             <a href="/SISVOX/PUBLIC/index.php?route=test" class="<?php echo ($route === 'test') ? 'active' : ''; ?>">Test</a>
-            <a href="/SISVOX/PUBLIC/index.php?route=carreras" class="<?php echo ($route === 'carreras') ? 'active' : ''; ?>">Carreras</a>
-            <a href="/SISVOX/PUBLIC/index.php?route=instituciones" class="<?php echo ($route === 'instituciones') ? 'active' : ''; ?>">Instituciones</a>
+            
+          <?php 
+                // Validamos si el usuario logueado es una institución basándonos en su rol o tipo de sesión
+                $esInstitucion = isset($_SESSION['rol']) && $_SESSION['rol'] === 'institucion';
+                
+                // Si es institución va a su panel privado, si es estudiante va al directorio público
+                $enlaceCarreras = $esInstitucion 
+                    ? '/SISVOX/PUBLIC/index.php?route=institucion_carreras' 
+                    : '/SISVOX/PUBLIC/index.php?route=carreras';
+            ?>
+            <a href="<?php echo $enlaceCarreras; ?>" class="<?php echo ($route === 'carreras' || $route === 'institucion_carreras') ? 'active' : ''; ?>">Carreras</a>
+
             <a href="/SISVOX/PUBLIC/index.php?route=convocatorias" class="<?php echo ($route === 'convocatorias') ? 'active' : ''; ?>">Convocatorias</a>
             <a href="/SISVOX/PUBLIC/index.php?route=becas" class="<?php echo ($route === 'becas') ? 'active' : ''; ?>">Becas</a>
             <a href="/SISVOX/public/index.php?route=mi_cuenta" class="nav-link <?= ($_GET['route'] ?? '') === 'mi_cuenta' ? 'active' : '' ?>">Mi cuenta</a>
@@ -230,7 +240,9 @@ $route = $_GET['route'] ?? 'home';
                     $viewPath = '';
 
                     if ($route === 'carreras') {
-                        $viewPath = __DIR__ . '/../carreras/index.php';
+                        $viewPath = __DIR__ . '/../CARRERAS/index.php';
+                    } elseif ($route === 'institucion_carreras') {
+                        $viewPath = __DIR__ . '/../INSTITUCIONES_PANEL/carreras.php';
                     } elseif ($route === 'test') {
                         $viewPath = __DIR__ . '/../test/index.php';
                     } elseif ($route === 'becas') {
