@@ -100,10 +100,9 @@ switch ($route) {
         break;
 
     case 'instituciones':
-        require_once __DIR__ . '/../APP/Controllers/InstitucionController.php';
-        (new InstitucionController())->index();
-        break;
-
+            require_once __DIR__ . '/../APP/Controllers/SedeController.php';
+            (new SedeController())->index();
+            break;
    case 'convocatorias':
         require_once __DIR__ . '/../APP/Controllers/ConvocatoriaController.php';
         (new ConvocatoriaController())->index();
@@ -166,15 +165,17 @@ switch ($route) {
         break;
 
     case 'institucion_becas':
-         // 1. Incluyes el archivo del controlador si no está cargado globalmente
-        require_once __DIR__ . '/../APP/CONTROLLERS/PanelInstitucionController.php';
-    
-        // 2. Ejecutas el método
+        require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
         (new PanelInstitucionController())->becas();
         break;
 
+    case 'guardar_beca':
+        require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
+        (new PanelInstitucionController())->storeBeca();
+        break;
+        
     case 'institucion_convocatorias':
-        require_once __DIR__ . '/../APP/CONTROLLERS/PanelInstitucionController.php';
+        require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
         (new PanelInstitucionController())->convocatorias();
         break;
 
@@ -183,11 +184,21 @@ switch ($route) {
         (new PanelInstitucionController())->storeConvocatoria();
         break;
     
-    case 'guardar_beca':
+    case 'institucion_sedes':
         require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
-        (new PanelInstitucionController())->storeBeca();
+        (new PanelInstitucionController())->sedes();
         break;
-   
+
+    case 'institucion_guardar_sede':
+        require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
+        (new PanelInstitucionController())->storeSede();
+        break;
+
+    case 'institucion_eliminar_sede':
+        require_once __DIR__ . '/../APP/Controllers/PanelInstitucionController.php';
+        (new PanelInstitucionController())->deleteSede();
+        break;
+
 
 // --- ubi ---
     default:

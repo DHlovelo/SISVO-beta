@@ -2,6 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+$sedesPublicas = $GLOBALS['sedesPublicas'] ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,133 +23,65 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <!-- Buscador interactivo -->
-        <input type="text" id="buscador" class="search-box" placeholder="Buscar institución o sede (ej. UMSA, El Alto, Unifranz)..." onkeyup="filtrarInstituciones()">
+        <input type="text" id="buscador" class="search-box" placeholder="Buscar institución, sede o ciudad (ej. Unifranz, El Alto, Central)..." onkeyup="filtrarSedes()">
 
-        <!-- SECCIÓN 1: UNIVERSIDADES -->
-        <h2 class="section-title">Universidades Públicas y Privadas</h2>
+        <h2 class="section-title">Sedes y Campus Registrados</h2>
+        
         <div class="grid-inst" id="lista-instituciones">
-            
-            <div class="card-inst" data-nombre="UMSA Universidad Mayor de San Andrés Monblock Sopocachi Miraflores La Paz Pública Autónoma">
-                <div>
-                    <span class="badge-tipo">Pública / Autónoma</span>
-                    <h3>UMSA - Universidad Mayor de San Andrés</h3>
-                    <p class="ubicacion">📍 Monblock, Sopocachi, Miraflores (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
+            <?php if (empty($sedesPublicas)): ?>
+                <p style="color: #9ca3af; text-align: center; grid-column: span 2; padding: 40px;">
+                    No hay sedes registradas en el sistema actualmente.
+                </p>
+            <?php else: ?>
+                <?php foreach ($sedesPublicas as $sede): 
+                    // Texto para el buscador interactivo
+                    $textoBusq = strtolower(($sede['nombre_institucion'] ?? '') . ' ' . ($sede['nombre_sede'] ?? '') . ' ' . ($sede['ciudad'] ?? '') . ' ' . ($sede['direccion'] ?? ''));
+                ?>
+                    <!-- CADA SEDE COMO UNA TARJETA SEPARADA -->
+                    <div class="card-inst" data-nombre="<?= htmlspecialchars($textoBusq) ?>">
+                        <div>
+                            <span class="badge-tipo"><?= htmlspecialchars($sede['tipo_institucion'] ?? 'Institución') ?></span>
+                            
+                            <!-- Nombre de la Universidad / Institución -->
+                            <h3 style="margin-top: 6px; color: #ffffff;"><?= htmlspecialchars($sede['nombre_institucion'] ?? $sede['nombre'] ?? 'Institución') ?></h3>
+                            
+                            <!-- Nombre específico de la Sede -->
+                            <p style="font-size: 15px; font-weight: 600; color: #3b82f6; margin-top: 8px;">
+                                📍 Sede: <?= htmlspecialchars($sede['nombre_sede']) ?>
+                            </p>
 
-            <div class="card-inst" data-nombre="UPEA Universidad Pública de El Alto Villa Esperanza Pública">
-                <div>
-                    <span class="badge-tipo">Pública / Autónoma</span>
-                    <h3>UPEA - Universidad Pública de El Alto</h3>
-                    <p class="ubicacion">📍 Villa Esperanza (El Alto)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
+                            <div class="ubicacion" style="margin-top: 8px; font-size: 14px; color: #9ca3af;">
+                                <p><strong>Ciudad / Depto:</strong> <?= htmlspecialchars($sede['ciudad']) ?></p>
+                                <p><strong>Dirección:</strong> <?= htmlspecialchars($sede['direccion']) ?></p>
+                                <?php if (!empty($sede['telefono_sede'])): ?>
+                                    <p><strong>Teléfono:</strong> <?= htmlspecialchars($sede['telefono_sede']) ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
 
-            <div class="card-inst" data-nombre="UCB Universidad Católica Boliviana San Pablo Obrajes Calacoto La Paz Privada">
-                <div>
-                    <span class="badge-tipo">Privada</span>
-                    <h3>UCB - Universidad Católica Boliviana "San Pablo"</h3>
-                    <p class="ubicacion">📍 Obrajes / Calacoto (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
+                        <div class="card-footer" style="margin-top: 18px; display: flex; justify-content: space-between; align-items: center;">
+                            <?php if (!empty($sede['url_maps'])): ?>
+                                <a href="<?= htmlspecialchars($sede['url_maps']) ?>" target="_blank" class="link-map" style="color: #3b82f6; text-decoration: none; font-weight: 500;">Ver en Google Maps ↗</a>
+                            <?php else: ?>
+                                <span></span>
+                            <?php endif; ?>
 
-            <div class="card-inst" data-nombre="UNIVALLE Universidad del Valle Miraflores Calacoto La Paz Privada">
-                <div>
-                    <span class="badge-tipo">Privada</span>
-                    <h3>UNIVALLE - Universidad del Valle</h3>
-                    <p class="ubicacion">📍 Miraflores / Calacoto (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-            <div class="card-inst" data-nombre="UNIFRANZ Universidad Franz Tamayo Landaeta La Paz San Martin El Alto Privada">
-                <div>
-                    <span class="badge-tipo">Privada</span>
-                    <h3>UNIFRANZ - Universidad Franz Tamayo</h3>
-                    <p class="ubicacion">📍 Landaeta (La Paz) / San Martín (El Alto)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-            <div class="card-inst" data-nombre="EMI Escuela Militar de Ingeniería Alto Irpavi Av Arce La Paz Privada Militar">
-                <div>
-                    <span class="badge-tipo">Privada / Militar</span>
-                    <h3>EMI - Escuela Militar de Ingeniería</h3>
-                    <p class="ubicacion">📍 Alto Irpavi / Av. Arce (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-            <div class="card-inst" data-nombre="UPB Universidad Privada Boliviana Achocalla La Paz Privada">
-                <div>
-                    <span class="badge-tipo">Privada</span>
-                    <h3>UPB - Universidad Privada Boliviana</h3>
-                    <p class="ubicacion">📍 Achocalla (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-            <div class="card-inst" data-nombre="USB Universidad Salesiana de Bolivia Achachicala La Paz Privada">
-                <div>
-                    <span class="badge-tipo">Privada</span>
-                    <h3>USB - Universidad Salesiana de Bolivia</h3>
-                    <p class="ubicacion">📍 Achachicala (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-            <div class="card-inst" data-nombre="ULP Universidad La Salle Bajo Llojeta La Paz Privada">
-                <div>
-                    <span class="badge-tipo">Privada</span>
-                    <h3>ULP - Universidad La Salle</h3>
-                    <p class="ubicacion">📍 Bajo Llojeta (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-            <div class="card-inst" data-nombre="UNABOL UDABOL Universidad Aquino de Bolivia Sopocachi La Paz Privada">
-                <div>
-                    <span class="badge-tipo">Privada</span>
-                    <h3>UNABOL - Universidad Aquino de Bolivia (UDABOL)</h3>
-                    <p class="ubicacion">📍 Sopocachi (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
+                            <?php if (!empty($sede['sitio_web'])): ?>
+                                <a href="<?= htmlspecialchars($sede['sitio_web']) ?>" target="_blank" class="btn-sitio">Sitio Oficial →</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
-        <!-- SECCIÓN 2: INSTITUTOS -->
-        <h2 class="section-title">Institutos Técnicos y Tecnológicos (Públicos y Privados)</h2>
-        <div class="grid-inst">
-            
-            <div class="card-inst" data-nombre="INCOS La Paz Instituto Comercial Superior Fiscal Tecnico Sup Av Montes La Paz">
-                <div>
-                    <span class="badge-tipo">Fiscal / Técnico Sup.</span>
-                    <h3>INCOS La Paz - Instituto Comercial Superior</h3>
-                    <p class="ubicacion">📍 Av. Montes (La Paz)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-            <div class="card-inst" data-nombre="INCOS El Alto Instituto Comercial Superior Fiscal Tecnico Sup Zona Central El Alto">
-                <div>
-                    <span class="badge-tipo">Fiscal / Técnico Sup.</span>
-                    <h3>INCOS El Alto - Instituto Comercial Superior</h3>
-                    <p class="ubicacion">📍 Zona Central (El Alto)</p>
-                </div>
-                <div class="card-footer"><a href="#" target="_blank" class="btn-sitio">Sitio Oficial →</a></div>
-            </div>
-
-        </div>
         <div style="margin-top: 40px; text-align: center;">
-    <a href="/SISVOX/public/index.php?route=inicio_estudiante" class="btn-primary" style="display:inline-block; text-decoration: none; background-color: #ffffff; color: #0b0b0b; padding: 12px 28px; border-radius: 30px; font-weight: 600; font-size: 15px;">← Volver al inicio</a>
-</div>
+            <a href="/SISVOX/public/index.php?route=inicio_estudiante" class="btn-primary" style="display:inline-block; text-decoration: none; background-color: #ffffff; color: #0b0b0b; padding: 12px 28px; border-radius: 30px; font-weight: 600; font-size: 15px;">← Volver al inicio</a>
+        </div>
     </div>
 
     <script>
-        function filtrarInstituciones() {
+        function filtrarSedes() {
             let input = document.getElementById('buscador').value.toLowerCase();
             let tarjetas = document.getElementsByClassName('card-inst');
 

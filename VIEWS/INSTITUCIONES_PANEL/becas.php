@@ -58,7 +58,7 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
             <a href="/SISVOX/PUBLIC/index.php?route=institucion_convocatorias">Inicio</a>
             <a href="/SISVOX/PUBLIC/index.php?route=chatbot">Chatbot</a>
             <a href="/SISVOX/PUBLIC/index.php?route=carreras">Carreras</a>
-            <a href="/SISVOX/PUBLIC/index.php?route=sedes">Sedes</a>
+            <a href="/SISVOX/PUBLIC/index.php?route=institucion_sedes">Sedes</a>
             <a href="/SISVOX/PUBLIC/index.php?route=institucion_convocatorias">Convocatorias</a>
             <a href="/SISVOX/PUBLIC/index.php?route=institucion_becas" class="active">Becas</a>
             <a href="#" style="color: #10b981; font-weight: 600; cursor: default;"><?php echo htmlspecialchars($nombreInstitucion); ?></a>
