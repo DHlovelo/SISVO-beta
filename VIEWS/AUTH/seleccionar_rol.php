@@ -80,12 +80,11 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
 
     <div class="header-select">
-        <h1>Bienvenido a <span>SISVOX</span></h1>
+        <h1>Bienvenido a <span>SISVO</span></h1>
         <p>Selecciona cómo deseas ingresar a la plataforma para continuar.</p>
     </div>
 
     <div class="cards-container">
-//--Estudiante
         <a href="/SISVOX/PUBLIC/index.php?route=login" class="role-card">
             <div>
                 <div class="icon-circle">🎓</div>
@@ -95,7 +94,6 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="btn-select">Ingresar como Estudiante</div>
         </a>
 
-//---rol inst
         <a href="/SISVOX/PUBLIC/index.php?route=login_institucion" class="role-card">
             <div>
                 <div class="icon-circle">🏛️</div>
