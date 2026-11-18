@@ -331,13 +331,14 @@ class AuthController
                 exit();
             }
 
-            // [NUEVO] No dejar entrar si no verificó el correo
+            // No dejar entrar si no verificó el correo
             if ((int) ($usuario['email_verificado'] ?? 0) !== 1) {
                 $_SESSION['verificacion_correo'] = $usuario['correo'];
                 header("Location: /SISVOX/PUBLIC/index.php?route=verificacion_pendiente&error=correo_no_verificado");
                 exit();
             }
 
+            // Estado original de la sesión
             $_SESSION['CI_usu'] = $usuario['CI_usu'];
             $_SESSION['nombre'] = $usuario['nombre_c_usu'];
             $_SESSION['user_rol'] = 'institucion';
@@ -354,7 +355,6 @@ class AuthController
             exit();
         }
     }
-
    public function procesarRegistroInstitucion()
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

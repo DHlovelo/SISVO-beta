@@ -99,10 +99,10 @@ switch ($route) {
         (new CarrerasController())->index();
         break;
 
-    case 'instituciones':
-            require_once __DIR__ . '/../APP/Controllers/SedeController.php';
-            (new SedeController())->index();
-            break;
+case 'instituciones':
+        require_once __DIR__ . '/../APP/Controllers/SedeController.php';
+        (new SedeController())->index();
+        break;
    case 'convocatorias':
         require_once __DIR__ . '/../APP/Controllers/ConvocatoriaController.php';
         (new ConvocatoriaController())->index();
@@ -199,29 +199,6 @@ switch ($route) {
         (new PanelInstitucionController())->deleteSede();
         break;
 
-// Vista pública de carreras
-    case 'carreras':
-        require_once __DIR__ . '/../APP/Controllers/CarrerasController.php';
-        (new CarrerasController())->index();
-        break;
-
-   case 'institucion_carreras':
-        require_once __DIR__ . '/../APP/CONTROLLERS/PanelInstitucionController.php';
-        $controller = new PanelInstitucionController();
-        $controller->carreras();
-        break;
-
-    case 'guardar_carrera':
-        require_once __DIR__ . '/../APP/CONTROLLERS/PanelInstitucionController.php';
-        $controller = new PanelInstitucionController();
-        $controller->storeCarrera();
-        break;
-
-    case 'eliminar_carrera':
-        require_once __DIR__ . '/../APP/CONTROLLERS/PanelInstitucionController.php';
-        $controller = new PanelInstitucionController();
-        $controller->deleteCarrera();
-        break;
 
 // --- ubi ---
     default:

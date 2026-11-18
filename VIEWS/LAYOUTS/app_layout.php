@@ -159,18 +159,23 @@ $route = $_GET['route'] ?? 'home';
         <a href="/SISVOX/PUBLIC/index.php?route=home" class="logo">SIS<span>VO</span></a>
         <nav class="nav-links">
             <a href="/SISVOX/PUBLIC/index.php?route=inicio_estudiante" class="<?php echo ($route === 'inicio_estudiante') ? 'active' : ''; ?>">Inicio</a>
-            <a href="/SISVOX/PUBLIC/index.php?route=chatbot" class="<?php echo ($route === 'chatbot') ? 'active' : ''; ?>">Chatbot</a>
-            <a href="/SISVOX/PUBLIC/index.php?route=test" class="<?php echo ($route === 'test') ? 'active' : ''; ?>">Test</a>
             
-          <?php 
-                // Validamos si el usuario logueado es una institución basándonos en su rol o tipo de sesión
+            <?php 
+                // Evaluamos si el usuario actual es una institución
                 $esInstitucion = isset($_SESSION['rol']) && $_SESSION['rol'] === 'institucion';
                 
-                // Si es institución va a su panel privado, si es estudiante va al directorio público
+                // Definimos el enlace dinámico de carreras según el rol
                 $enlaceCarreras = $esInstitucion 
                     ? '/SISVOX/PUBLIC/index.php?route=institucion_carreras' 
                     : '/SISVOX/PUBLIC/index.php?route=carreras';
             ?>
+
+            <!-- El Chatbot y el Test SOLO se muestran si NO es una institución -->
+            <?php if (!$esInstitucion): ?>
+                <a href="/SISVOX/PUBLIC/index.php?route=chatbot" class="<?php echo ($route === 'chatbot') ? 'active' : ''; ?>">Chatbot</a>
+                <a href="/SISVOX/PUBLIC/index.php?route=test" class="<?php echo ($route === 'test') ? 'active' : ''; ?>">Test</a>
+            <?php endif; ?>
+            
             <a href="<?php echo $enlaceCarreras; ?>" class="<?php echo ($route === 'carreras' || $route === 'institucion_carreras') ? 'active' : ''; ?>">Carreras</a>
 
             <a href="/SISVOX/PUBLIC/index.php?route=convocatorias" class="<?php echo ($route === 'convocatorias') ? 'active' : ''; ?>">Convocatorias</a>
