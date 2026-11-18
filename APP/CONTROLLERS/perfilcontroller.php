@@ -26,16 +26,18 @@ class PerfilController {
         $ci_usu = $_SESSION['CI_usu'] ?? $_SESSION['ci_usu'] ?? $_SESSION['usuario']['ci'] ?? null;
 
         // 3. Procesar formulario si se envían cambios por POST
+       // 3. Procesar formulario si se envían cambios por POST
         $mensaje = "";
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $ci_usu) {
-            $nuevoNombre = $_POST['nombre'] ?? '';
-            $nuevoPassword = $_POST['password'] ?? '';
+            $nuevoNombre = trim($_POST['nombre'] ?? '');
+            $nuevoPassword = trim($_POST['password'] ?? '');
 
             try {
                 if (!empty($nuevoPassword)) {
-                    // Actualizamos usando nombre_c_usu y contrasena (con 'n')
+                    // Encriptamos la contraseña igual que en el registro para que password_verify() la acepte
+                    $passwordHash = password_hash($nuevoPassword, PASSWORD_DEFAULT);
                     $stmtUpdate = $pdo->prepare("UPDATE nuevo_usu SET nombre_c_usu = ?, contrasena = ? WHERE ci_usu = ?");
-                    $stmtUpdate->execute([$nuevoNombre, $nuevoPassword, $ci_usu]);
+                    $stmtUpdate->execute([$nuevoNombre, $passwordHash, $ci_usu]);
                 } else {
                     // Si dejó la contraseña en blanco, solo actualizamos nombre_c_usu
                     $stmtUpdate = $pdo->prepare("UPDATE nuevo_usu SET nombre_c_usu = ? WHERE ci_usu = ?");

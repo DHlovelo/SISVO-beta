@@ -67,7 +67,7 @@ public function registrar() {
         }
 
         $email = trim($_POST['correo'] ?? $_POST['email'] ?? '');
-        $password = trim($_POST['password'] ?? '');
+        $password = ($_POST['password'] ?? '');
         $tipoAcceso = trim($_POST['tipo_acceso'] ?? 'usuario');
 
         if (empty($email) || empty($password)) {
@@ -129,7 +129,8 @@ public function registrar() {
         $telefono = trim($_POST['telefono'] ?? '');
         $email = trim($_POST['correo'] ?? '');
         $fecha_nacimiento = trim($_POST['fecha_nacimiento'] ?? '');
-        $password = $_POST['password'] ?? '';
+        $password = trim($_POST['password'] ?? ''); // SIN trim()
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $rol = 'usuario'; 
 
         if (empty($ci) || empty($nombre) || empty($email) || empty($password)) {
