@@ -1,5 +1,4 @@
 <?php
-// views/becas/index.php
 ?>
 <div style="max-width: 1000px; margin: 0 auto; padding: 0 15px;">
 
@@ -20,11 +19,9 @@
         </div>
     <?php else: ?>
         <?php foreach ($becas as $beca): ?>
-            <!-- CADA TARJETA COMPARTE EXACTAMENTE LA MISMA ESTRUCTURA Y TAMAÑO -->
             <div style="background: #141414; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
                 
                 <div>
-                    <!-- Insignia de la Institución y Etiqueta -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                         <span style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">
                             <?= htmlspecialchars($beca['nombre_institucion'] ?? 'Institución') ?>
@@ -32,17 +29,14 @@
                         <span style="background: rgba(16, 185, 129, 0.1); color: #10b981; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;">Beca</span>
                     </div>
 
-                    <!-- Título -->
                     <h3 style="color: #ffffff; font-size: 18px; font-weight: 600; margin-bottom: 10px; line-height: 1.4;">
                         <?= htmlspecialchars($beca['titulo']) ?>
                     </h3>
 
-                    <!-- Descripción -->
                     <p style="color: #9ca3af; font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
                         <?= nl2br(htmlspecialchars($beca['descripcion'])) ?>
                     </p>
 
-                    <!-- Requisitos (si existen) -->
                     <?php if (!empty($beca['requisitos'])): ?>
                         <div style="background: #0b0b0b; border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; margin-bottom: 20px;">
                             <span style="display: block; color: #3b82f6; font-size: 11px; font-weight: 600; margin-bottom: 4px; text-transform: uppercase;">Requisitos:</span>
@@ -51,7 +45,6 @@
                     <?php endif; ?>
                 </div>
 
-                <!-- Pie de tarjeta: Fecha y Botón alineados perfectamente -->
                 <div style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <span style="display: block; color: #6b7280; font-size: 10px; text-transform: uppercase; font-weight: 600;">Cierre</span>

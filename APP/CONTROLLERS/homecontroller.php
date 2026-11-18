@@ -1,5 +1,4 @@
 <?php
-// app/Controllers/HomeController.php
 
 class HomeController {
     public function index() {
@@ -12,10 +11,8 @@ class HomeController {
             exit;
         }
 
-        // Definimos qué vista interna va a mostrar el layout
         $vistaInterna = __DIR__ . '/../../views/inicio_estudiante.php';
         
-        // Ruta absoluta del layout principal
         $layoutPath = __DIR__ . '/../../views/layouts/app_layout.php';
         
         if (file_exists($layoutPath)) {

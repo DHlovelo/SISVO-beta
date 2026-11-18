@@ -1,9 +1,7 @@
 <?php
-// views/CARRERAS/index.php
 require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
 global $pdo;
 
-// Si por alguna razón $pdo llega nulo, lo inicializamos de forma segura
 if (!isset($pdo) || $pdo === null) {
     try {
         $pdo = new PDO("mysql:host=localhost;dbname=sisvo;charset=utf8", "root", "");
@@ -13,7 +11,6 @@ if (!isset($pdo) || $pdo === null) {
     }
 }
 
-// Consultamos las carreras unidas con sus respectivas sedes
 try {
     $stmt = $pdo->prepare("
         SELECT c.*, s.nombre_sede 

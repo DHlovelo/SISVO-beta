@@ -1,5 +1,4 @@
 <?php
-// VIEWS/auth/login_instituciones.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -136,7 +135,6 @@ if (session_status() === PHP_SESSION_NONE) {
         <h2>Portal Institucional</h2>
         <p class="subtitle">Ingresa con tus credenciales oficiales de universidad o instituto.</p>
 
-        <!-- Mensajes de error dinámicos si el controlador los envía -->
         <?php if (isset($_GET['error'])): ?>
             <div class="alert-error">
                 <?php 
@@ -148,7 +146,6 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         <?php endif; ?>
 
-        <!-- Apunta a la ruta de autenticación de instituciones que ya creamos -->
         <form action="/SISVOX/PUBLIC/index.php?route=authenticate_institucion" method="POST">
             <div class="form-group">
                 <label>Correo Electrónico</label>

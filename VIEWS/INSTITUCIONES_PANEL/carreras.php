@@ -1,12 +1,11 @@
 <?php
-// views/instituciones_panel/carreras.php
-// Aseguramos la obtención de las variables pasadas desde el controlador
+// Aseguramos las variables pasadas desde el controlador
 $sedes = $GLOBALS['sedes_institucion'] ?? [];
 $carreras = $GLOBALS['carreras_institucion'] ?? [];
 ?>
 
 <style>
-    /* Estilo unificado para los campos del formulario institucional */
+
     .content-container input[type="text"],
     .content-container select,
     .content-container textarea {
@@ -36,7 +35,6 @@ $carreras = $GLOBALS['carreras_institucion'] ?? [];
         font-weight: 500;
     }
 
-    /* Botón de publicar con el estilo principal de SISVO */
     .content-container button[type="submit"],
     .content-container .btn-publicar {
         background-color: #ffffff;

@@ -1,5 +1,4 @@
 <?php
-// APP/HELPERS/mailer.php
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -27,7 +26,7 @@ function renderizarCorreo(string $vista, array $datos = []): string
 function enviarCorreo(string $email, string $nombre, string $asunto, string $cuerpoHtml): bool
 {
     $cfg  = configCorreo();
-    $mail = new PHPMailer(true); // true = lanza excepciones
+    $mail = new PHPMailer(true);
 
     try {
         $mail->isSMTP();

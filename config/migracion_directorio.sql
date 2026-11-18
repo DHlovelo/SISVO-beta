@@ -1,21 +1,10 @@
--- config/migracion_directorio.sql
--- Ejecutar UNA SOLA VEZ en phpMyAdmin (base de datos: sisvo).
--- Crea 3 tablas NUEVAS (no toca nuevo_usu, instituciones, becas ni convocatorias)
--- y carga las universidades de La Paz con sus carreras, tal como están en tus documentos.
---
---   directorio_instituciones : una fila por universidad (luego se agregarán los institutos con categoria='instituto')
---   carreras                 : una fila por NOMBRE de carrera (sin repetir)
---   institucion_carrera      : une cada carrera con la universidad donde se estudia
---                              (facultad, grado, duración y observaciones cambian según la universidad)
---
--- Donde el documento dice "Por verificar" / "Por confirmar" se guarda NULL y la página muestra ese texto.
 
 CREATE TABLE IF NOT EXISTS directorio_instituciones (
   id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  categoria     VARCHAR(20)  NOT NULL DEFAULT 'universidad',   -- 'universidad' o 'instituto'
+  categoria     VARCHAR(20)  NOT NULL DEFAULT 'universidad',   
   sigla         VARCHAR(30)  NULL,
   nombre        VARCHAR(200) NOT NULL,
-  tipo          VARCHAR(30)  NULL,                             -- Pública, Privada, Especial...
+  tipo          VARCHAR(30)  NULL,   
   regimen       TEXT         NULL,
   anio_creacion VARCHAR(80)  NULL,
   sedes         TEXT         NULL,
@@ -38,8 +27,8 @@ CREATE TABLE IF NOT EXISTS institucion_carrera (
   institucion_id INT UNSIGNED NOT NULL,
   carrera_id     INT UNSIGNED NOT NULL,
   facultad       VARCHAR(200) NULL,
-  grado          VARCHAR(40)  NOT NULL,                        -- Licenciatura / Técnico superior
-  duracion       VARCHAR(80)  NULL,                            -- con * = fuente secundaria
+  grado          VARCHAR(40)  NOT NULL,                       
+  duracion       VARCHAR(80)  NULL,                           
   observaciones  TEXT         NULL,
   PRIMARY KEY (id),
   KEY idx_institucion (institucion_id),

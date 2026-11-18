@@ -5,7 +5,6 @@ class CarrerasController {
             session_start();
         }
 
-        // 1. Conexión segura a la Base de Datos
         require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
         global $pdo;
 
@@ -39,11 +38,9 @@ class CarrerasController {
             $carrerasPublicas = [];
         }
 
-        // Pasamos los datos a la variable global para que los tome la vista
         $GLOBALS['carrerasPublicas'] = $carrerasPublicas;
-        $_GET['route'] = 'carreras'; // Asegura la ruta activa en el menú
+        $_GET['route'] = 'carreras';
 
-        // 2. Cargamos el layout principal de la aplicación (igual que en Instituciones)
         $layoutPath = __DIR__ . '/../../VIEWS/layouts/app_layout.php';
         $layoutMin = __DIR__ . '/../../views/layouts/app_layout.php';
 
@@ -52,7 +49,6 @@ class CarrerasController {
         } elseif (file_exists($layoutMin)) {
             require_once $layoutMin;
         } else {
-            // Si por alguna razón no encuentra el layout, carga la vista directa
             require_once __DIR__ . '/../../VIEWS/CARRERAS/index.php';
         }
     }

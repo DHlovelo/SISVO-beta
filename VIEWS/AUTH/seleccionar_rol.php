@@ -1,5 +1,4 @@
 <?php
-// VIEWS/AUTH/seleccionar_rol.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -86,7 +85,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 
     <div class="cards-container">
-        <!-- Opción 1: Estudiante -->
+//--Estudiante
         <a href="/SISVOX/PUBLIC/index.php?route=login" class="role-card">
             <div>
                 <div class="icon-circle">🎓</div>
@@ -96,7 +95,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="btn-select">Ingresar como Estudiante</div>
         </a>
 
-        <!-- Opción 2: Institución -->
+//---rol inst
         <a href="/SISVOX/PUBLIC/index.php?route=login_institucion" class="role-card">
             <div>
                 <div class="icon-circle">🏛️</div>

@@ -1,9 +1,4 @@
 <?php
-// VIEWS/AUTH/verificacion.php
-// Variables que envía el controlador:
-//   $estado  -> 'pendiente' | 'exito' | 'invalido' | 'expirado'
-//   $correo  -> correo del usuario (para mostrar y reenviar)
-//   $aviso   -> mensaje extra opcional (ej: "Correo reenviado")
 $estado = $estado ?? 'pendiente';
 $correo = $correo ?? '';
 $aviso  = $aviso  ?? '';

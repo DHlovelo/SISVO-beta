@@ -148,7 +148,6 @@ $nombreInstitucion = $_SESSION['nombre'] ?? 'Institución';
         <a href="#" class="logo">SIS<span>VO</span></a>
         <nav class="nav-links">
             <a href="/SISVOX/PUBLIC/index.php?route=panel_institucion" class="active">Inicio</a>
-            <a href="/SISVOX/PUBLIC/index.php?route=chatbot">Chatbot</a>
             <a href="/SISVOX/PUBLIC/index.php?route=carreras">Carreras</a>
             <a href="/SISVOX/PUBLIC/index.php?route=sedes">Sedes</a>
             <a href="/SISVOX/PUBLIC/index.php?route=convocatorias">Convocatorias</a>

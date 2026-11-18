@@ -1,5 +1,4 @@
 <?php
-// app/Controllers/TestController.php
 
 class TestController {
     public function index() {

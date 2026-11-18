@@ -1,5 +1,4 @@
 <?php
-// VIEWS/auth/registro_instituciones.php
 $tipoInstitucion = $_GET['tipo'] ?? 'instituto'; // Puede ser 'universidad' o 'instituto'
 $esUniversidad = ($tipoInstitucion === 'universidad');
 ?>
@@ -13,7 +12,6 @@ $esUniversidad = ($tipoInstitucion === 'universidad');
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* Corrección definitiva para que toda la pantalla sea oscura y elimine bordes blancos */
         html, body {
             background-color: #0b0b0b !important;
             color: #ffffff;
@@ -120,7 +118,6 @@ $esUniversidad = ($tipoInstitucion === 'universidad');
         <p class="subtitle">Completa la información oficial para verificar tu institución en SISVOX.</p>
 
         <form action="/SISVOX/PUBLIC/index.php?route=procesar_registro_institucion" method="POST">
-            <!-- Pasamos oculto el tipo de institución -->
             <input type="hidden" name="tipo_institucion" value="<?php echo htmlspecialchars($tipoInstitucion); ?>">
 
             <div class="form-group">

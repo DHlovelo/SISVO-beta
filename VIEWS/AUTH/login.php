@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/SISVOX/PUBLIC/css/usuario.css">
     <style>
-        /* Estilo para posicionar el botón flotante en la esquina inferior derecha */
         .btn-volver-esquina {
             position: fixed;
             bottom: 25px;
@@ -78,7 +77,6 @@
         </div>
     </div>
 
-    <!-- Botón posicionado en la esquina inferior derecha -->
     <div class="btn-volver-esquina">
          <a href="/SISVOX/public/index.php?route=seleccionar_tipo" class="btn-primary" style="display:inline-block; text-decoration: none; background-color: #110d27; color: #fdfdfd; padding: 10px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">← Volver al inicio</a>
     </div>

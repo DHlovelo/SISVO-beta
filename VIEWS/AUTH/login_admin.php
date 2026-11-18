@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Evita que buscadores indexen esta vista si algún día subes el proyecto a internet -->
     <meta name="robots" content="noindex, nofollow">
     <title>Acceso Administrativo - SISVO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,9 +37,7 @@
             </p>
         <?php endif; ?>
 
-        <!-- Apunta al mismo authenticate de tu AuthController -->
         <form action="/SISVOX/PUBLIC/index.php?route=authenticate" method="POST" autocomplete="off">
-            <!-- Identificador clave para que AuthController sepa que viene del portal admin -->
             <input type="hidden" name="tipo_acceso" value="admin">
 
             <div class="input-group">

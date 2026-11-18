@@ -1,13 +1,11 @@
 <?php
-// views/chatbot/index.php
+
 ?>
-<!-- Cargar la hoja de estilos específica del chatbot -->
 <link rel="stylesheet" href="/SISVOX/public/css/chatbot.css?v=<?php echo time(); ?>">
 
 <div style="max-width: 850px; margin: 20px auto; padding: 0 15px;">
     <div class="chat-card">
         
-        <!-- Cabecera del Chat -->
         <div class="chat-header">
             <div class="bot-avatar">🤖</div>
             <div>
@@ -17,7 +15,6 @@
             <div class="online-dot" title="En línea"></div>
         </div>
 
-        <!-- Cuerpo / Mensajes del Chat -->
         <div class="chat-body" id="chat-messages">
             <div class="message-row bot-row">
                 <div class="message bot-message">
@@ -27,7 +24,6 @@
             </div>
         </div>
 
-        <!-- Preguntas Rápidas -->
         <div class="quick-questions">
             <button class="quick-btn" onclick="enviarSugerencia('Test vocacional')">Test vocacional</button>
             <button class="quick-btn" onclick="enviarSugerencia('Universidades')">Universidades</button>
@@ -35,13 +31,11 @@
             <button class="quick-btn" onclick="enviarSugerencia('¿Para qué sirves?')">¿Para qué sirves?</button>
         </div>
 
-        <!-- Área de Entrada de Mensaje -->
         <div class="chat-input-area">
             <input type="text" id="user-input" placeholder="Escribe tu pregunta" style="flex: 1;" onkeypress="if(event.key === 'Enter') enviarMensaje();">
             <button class="send-btn" onclick="enviarMensaje()">Enviar</button>
         </div>
 
-        <!-- parte de abajo del Chat -->
         <div class="chat-footer" style="padding-top: 10px;">
             VOX - Asistente Inteligente
         </div>
@@ -65,7 +59,6 @@ function enviarMensaje() {
 
     const chatMessages = document.getElementById('chat-messages');
 
-    // Fila del mensaje del usuario
     const userRow = document.createElement('div');
     userRow.className = 'message-row user-row';
     userRow.innerHTML = `
@@ -79,7 +72,6 @@ function enviarMensaje() {
     input.value = '';
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // Mostrar animación de "escribiendo..."
     const typingRow = document.createElement('div');
     typingRow.className = 'message-row bot-row';
     typingRow.id = 'typing-indicator';
@@ -94,7 +86,6 @@ function enviarMensaje() {
     chatMessages.appendChild(typingRow);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // Simular respuesta del bot tras un breve retraso
     setTimeout(() => {
         document.getElementById('typing-indicator').remove();
 

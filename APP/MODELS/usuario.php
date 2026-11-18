@@ -1,5 +1,4 @@
 <?php
-// APP/MODELS/usuario.php
 
 require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
 
@@ -18,14 +17,6 @@ class Usuario {
         return $stmt->execute([$ci, $nombre, $telefono, $correo, $fecha_nacimiento, $passwordHash, $rol]);
     }
 
-    // =====================================================
-    // [NUEVO] VERIFICACIÓN DE CORREO
-    // =====================================================
-
-    /**
-     * Guarda el HASH del token y lo hace vencer en 24 horas.
-     * (El token real solo viaja en el correo; en la BD queda su hash SHA-256.)
-     */
     public static function guardarTokenVerificacion($ci, $tokenHash) {
         global $pdo;
         $stmt = $pdo->prepare(
@@ -38,9 +29,6 @@ class Usuario {
         return $stmt->execute([$tokenHash, $ci]);
     }
 
-    /**
-     * Busca al usuario dueño de un token. Devuelve también 'vigente' (1 = no ha vencido, 0 = venció).
-     */
     public static function buscarPorTokenVerificacion($tokenHash) {
         global $pdo;
         $stmt = $pdo->prepare(
@@ -53,9 +41,6 @@ class Usuario {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Marca el correo como verificado y borra el token (un token sirve una sola vez).
-     */
     public static function marcarCorreoVerificado($ci) {
         global $pdo;
         $stmt = $pdo->prepare(

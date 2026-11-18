@@ -5,7 +5,6 @@ class PerfilController {
             session_start();
         }
 
-        // 1. Conexión a la base de datos
         require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
         global $pdo;
 
@@ -22,10 +21,8 @@ class PerfilController {
             }
         }
 
-        // 2. Obtenemos el CI de la sesión
         $ci_usu = $_SESSION['CI_usu'] ?? $_SESSION['ci_usu'] ?? $_SESSION['usuario']['ci'] ?? null;
 
-        // 3. Procesar formulario si se envían cambios por POST
         $mensaje = "";
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $ci_usu) {
             $nuevoNombre = $_POST['nombre'] ?? '';
@@ -33,7 +30,6 @@ class PerfilController {
 
             try {
                 if (!empty($nuevoPassword)) {
-                    // Actualizamos usando nombre_c_usu y contrasena (con 'n')
                     $stmtUpdate = $pdo->prepare("UPDATE nuevo_usu SET nombre_c_usu = ?, contrasena = ? WHERE ci_usu = ?");
                     $stmtUpdate->execute([$nuevoNombre, $nuevoPassword, $ci_usu]);
                 } else {
@@ -42,7 +38,6 @@ class PerfilController {
                     $stmtUpdate->execute([$nuevoNombre, $ci_usu]);
                 }
                 
-                // Actualizamos la sesión
                 $_SESSION['nombre'] = $nuevoNombre;
                 if (isset($_SESSION['usuario'])) {
                     $_SESSION['usuario']['nombre'] = $nuevoNombre;
@@ -54,7 +49,6 @@ class PerfilController {
             }
         }
 
-        // 4. Consultar los datos actuales del usuario desde 'nuevo_usu'
         $usuario = [];
         if ($ci_usu) {
             $stmt = $pdo->prepare("SELECT * FROM nuevo_usu WHERE ci_usu = ?");
@@ -62,7 +56,6 @@ class PerfilController {
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
-        // 5. Blindar datos en GLOBALS y cargar layout
         $GLOBALS['usuario'] = $usuario;
         $GLOBALS['mensaje_perfil'] = $mensaje;
         $_GET['route'] = 'mi_cuenta';

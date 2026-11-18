@@ -5,7 +5,6 @@ class InstitucionController {
             session_start();
         }
 
-        // 1. Incluimos la conexión a la base de datos
         require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
         global $pdo;
 
@@ -22,7 +21,6 @@ class InstitucionController {
             }
         }
 
-        // 2. Consultamos todas las instituciones registradas
         $instituciones = [];
         try {
             $stmt = $pdo->query("SELECT * FROM instituciones ORDER BY nombre_institucion ASC");
@@ -31,13 +29,10 @@ class InstitucionController {
             $instituciones = [];
         }
 
-        // 3. Blindamos los datos en GLOBALS por seguridad del layout
         $GLOBALS['instituciones'] = $instituciones;
 
-        // 4. Indicamos la ruta actual para el layout
         $_GET['route'] = 'instituciones';
 
-        // 5. Cargamos el layout principal (barra de navegación superior)
         $layoutPath = __DIR__ . '/../../VIEWS/layouts/app_layout.php';
         
         if (file_exists($layoutPath)) {

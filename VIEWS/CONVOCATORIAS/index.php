@@ -3,13 +3,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Aseguramos que $convocatorias tenga datos (ya sea de la variable local o global)
 $listaConvocatorias = $convocatorias ?? ($GLOBALS['convocatorias'] ?? []);
 ?>
 
 <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 30px 20px;">
 
-    <!-- Encabezado Principal -->
     <div class="header-section" style="text-align: center; margin-bottom: 40px;">
         <h1 style="color: #ffffff; font-size: 32px; font-weight: 700; margin-bottom: 10px;">Convocatorias Vigentes</h1>
         <p style="color: #94a3b8; font-size: 15px; max-width: 700px; margin: 0 auto;">Revisa las convocatorias académicas, exámenes de suficiencia y oportunidades abiertas en nuestras instituciones aliadas.</p>
@@ -17,7 +15,6 @@ $listaConvocatorias = $convocatorias ?? ($GLOBALS['convocatorias'] ?? []);
 
     <div style="padding: 10px 0; max-width: 1260px; margin: 0 auto;">
         
-        <!-- Insignia de Panel -->
         <div style="text-align: center; margin-bottom: 30px;">
             <span style="background: rgba(2, 132, 199, 0.1); color: #38bdf8; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(2, 132, 199, 0.2); display: inline-block;">
                 Panel de Convocatorias Institucionales

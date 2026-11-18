@@ -1,17 +1,11 @@
 <?php
-// APP/CONTROLLERS/authcontroller.php
 
 require_once __DIR__ . '/../MODELS/usuario.php';
 require_once __DIR__ . '/../HELPERS/mailer.php'; // [NUEVO]
 
 class AuthController
 {
-//--- CORREOS / VERIFICACIÓN DE CORREO  [NUEVO]
 
-    /**
-     * Genera el token, lo guarda (hasheado) y envía el correo de verificación.
-     * Lo usan: store(), procesarRegistroInstitucion() y reenviarVerificacion().
-     */
     private function enviarVerificacion($ci, $nombre, $email): bool
     {
         $token = bin2hex(random_bytes(32));                    // 64 caracteres hex
@@ -29,9 +23,8 @@ class AuthController
         return enviarCorreo($email, $nombre, 'Verifica tu correo en SISVO', $cuerpo);
     }
 
-    /**
-     * Pantalla "revisa tu correo".
-     */
+    
+    //----Pantalla "revisa tu correo"
     public function verificacionPendiente()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -53,9 +46,6 @@ class AuthController
         require_once __DIR__ . '/../../VIEWS/AUTH/verificacion.php';
     }
 
-    /**
-     * El usuario hace clic en el enlace del correo: ?route=verificar_correo&token=...
-     */
     public function verificarCorreo()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -66,7 +56,6 @@ class AuthController
         $correo = '';
         $aviso  = '';
 
-        // Un token válido siempre son 64 caracteres hexadecimales
         if (!preg_match('/^[a-f0-9]{64}$/', $token)) {
             $estado = 'invalido';
             require_once __DIR__ . '/../../VIEWS/AUTH/verificacion.php';
@@ -84,7 +73,6 @@ class AuthController
             Usuario::marcarCorreoVerificado($usuario['CI_usu']);
             $estado = 'exito';
 
-            // Correo de bienvenida (si falla, no bloqueamos al usuario)
             $cfg    = configCorreo();
             $cuerpo = renderizarCorreo('bienvenida', [
                 'nombre'   => $usuario['nombre_c_usu'],
@@ -96,9 +84,7 @@ class AuthController
         require_once __DIR__ . '/../../VIEWS/AUTH/verificacion.php';
     }
 
-    /**
-     * Botón "Reenviar correo de verificación" (POST).
-     */
+    //----Boton de Reenviar correo d
     public function reenviarVerificacion()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -119,8 +105,6 @@ class AuthController
         $email   = trim($_POST['correo'] ?? '');
         $usuario = $email !== '' ? Usuario::buscarPorEmail($email) : false;
 
-        // Solo reenviamos si existe y aún no está verificado.
-        // La respuesta es la misma en ambos casos para no revelar qué correos existen.
         if ($usuario && (int) ($usuario['email_verificado'] ?? 0) !== 1) {
             $this->enviarVerificacion($usuario['CI_usu'], $usuario['nombre_c_usu'], $usuario['correo']);
         }
@@ -175,7 +159,6 @@ class AuthController
         if ($usuario && password_verify($password, $usuario['contrasena'])) {
             $rolReal = $usuario['rol'] ?? 'usuario';
 
-            // Validación de coherencia: evitar que entren por el portal equivocado
             if ($tipoAcceso === 'institucion' && $rolReal !== 'institucion') {
                 header("Location: /SISVOX/PUBLIC/index.php?route=login&tipo=institucion&error=no_es_institucion");
                 exit();
@@ -202,7 +185,6 @@ class AuthController
                 'email' => $usuario['correo'] ?? ''
             ];
 
-            // --- ESTO ES LO QUE FALTABA: REDIRIGIR AL USUARIO ---
             $this->redirigirSegunRol($rolReal);
 
         } else {
@@ -250,8 +232,6 @@ class AuthController
             $creado = Usuario::crear($ci, $nombre, $telefono, $email, $fecha_nacimiento, $passwordHash, $rol);
 
             if ($creado) {
-                // [NUEVO] Enviar correo de verificación. Si falla el envío, el usuario
-                // igual queda registrado y puede pedir el reenvío desde la pantalla siguiente.
                 if (!$this->enviarVerificacion($ci, $nombre, $email)) {
                     error_log("Usuario registrado pero falló el correo de verificación: " . $email);
                 }
@@ -324,7 +304,6 @@ class AuthController
 
         $usuario = Usuario::buscarPorEmail($email);
 
-        // Verificamos contraseña y que el rol en la base de datos sea estrictamente 'institucion'
         if ($usuario && password_verify($password, $usuario['contrasena'])) {
             if (($usuario['rol'] ?? '') !== 'institucion') {
                 header("Location: /SISVOX/PUBLIC/index.php?route=login_instituciones&error=no_es_institucion");
@@ -338,7 +317,6 @@ class AuthController
                 exit();
             }
 
-            // Estado original de la sesión
             $_SESSION['CI_usu'] = $usuario['CI_usu'];
             $_SESSION['nombre'] = $usuario['nombre_c_usu'];
             $_SESSION['user_rol'] = 'institucion';
@@ -370,15 +348,12 @@ class AuthController
         $contrasenaHash = password_hash($password, PASSWORD_DEFAULT);
         $rol = 'institucion';
 
-        // Incluimos tu archivo de conexión exacto (ajusta los niveles "../" según la ubicación real de tu carpeta config)
-        require_once __DIR__ . '/../../config/sisvo_conexion.php'; // O '/../../Config/sisvo_conexion.php'
+        require_once __DIR__ . '/../../config/sisvo_conexion.php';
 
-        // Como tu archivo usa la variable global $pdo, la asignamos aquí:
         global $pdo;
         $db = $pdo; 
 
         try {
-            // Iniciamos una transacción para guardar en ambas tablas de forma sincronizada
             $db->beginTransaction();
 
             // 1. Insertar en la tabla nuevo_usu
@@ -391,7 +366,6 @@ class AuthController
 
             $db->commit();
 
-            // [NUEVO] Enviar correo de verificación a la institución
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }

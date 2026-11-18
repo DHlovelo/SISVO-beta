@@ -5,7 +5,6 @@ class ConvocatoriaController {
             session_start();
         }
 
-        // 1. Conexión a la base de datos
         require_once __DIR__ . '/../../CONFIG/sisvo_conexion.php';
         global $pdo;
 
@@ -22,7 +21,6 @@ class ConvocatoriaController {
             }
         }
 
-        // 2. Consultamos las convocatorias y becas
         $convocatorias = [];
         $becas = [];
         try {
@@ -42,14 +40,11 @@ class ConvocatoriaController {
             $becas = [];
         }
 
-        // 3. Blindamos los datos en GLOBALS para que el layout no los borre
         $GLOBALS['convocatorias'] = $convocatorias;
         $GLOBALS['becas'] = $becas;
 
-        // 4. Indicamos la ruta actual para el layout
         $_GET['route'] = 'convocatorias';
 
-        // 5. Cargamos el layout principal
         $layoutPath = __DIR__ . '/../../VIEWS/layouts/app_layout.php';
         
         if (file_exists($layoutPath)) {
